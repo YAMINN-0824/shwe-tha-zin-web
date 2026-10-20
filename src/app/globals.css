@@ -7,9 +7,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-sans: var(--font-zen-kaku-gothic), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-shippori-mincho), ui-serif, serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -48,73 +47,101 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+/* タザンのランの色（くわしくは DESIGN.md） */
+@theme {
+  --color-ivory: #f7f3e8; /* 花びら：背景 */
+  --color-forest: #1f2a1e; /* 森の緑：文字、フッター */
+  --color-leaf: #6b7a45; /* 葉の緑：線、アイコン、大きい文字 */
+  --color-leaf-deep: #4f5b30; /* 葉の緑の小さい文字 */
+  --color-gold: #d9a92e; /* Shwe：アクセント。少しだけ */
+  --color-gold-deep: #8a6a16; /* アイボリーの上の金の文字 */
+  --color-orange: #c8743a; /* 花の中心：小さい点や印だけ */
+  --color-orange-deep: #9e5424; /* オレンジの文字 */
+
+  /* 花が開くような、ゆっくりしたフェードイン */
+  --ease-bloom: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-bloom: bloom 1.2s var(--ease-bloom) both;
+
+  @keyframes bloom {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
+:root {
+  --background: var(--color-ivory);
+  --foreground: var(--color-forest);
+  --card: #fbf9f2;
+  --card-foreground: var(--color-forest);
+  --popover: #fbf9f2;
+  --popover-foreground: var(--color-forest);
+  --primary: var(--color-forest);
+  --primary-foreground: var(--color-ivory);
+  --secondary: #e7e6d3;
+  --secondary-foreground: var(--color-forest);
+  --muted: #efe9da;
+  --muted-foreground: #5b6450;
+  --accent: #f1e5c3;
+  --accent-foreground: var(--color-forest);
+  --destructive: #a93a2c;
+  --border: #ddd5c0;
+  --input: #d3cab2;
+  --ring: var(--color-gold);
+  --chart-1: var(--color-leaf);
+  --chart-2: var(--color-gold);
+  --chart-3: var(--color-orange);
+  --chart-4: var(--color-leaf-deep);
+  --chart-5: var(--color-gold-deep);
+  --radius: 0.75rem;
+  --sidebar: #f1ecdf;
+  --sidebar-foreground: var(--color-forest);
+  --sidebar-primary: var(--color-forest);
+  --sidebar-primary-foreground: var(--color-ivory);
+  --sidebar-accent: #f1e5c3;
+  --sidebar-accent-foreground: var(--color-forest);
+  --sidebar-border: #ddd5c0;
+  --sidebar-ring: var(--color-gold);
+}
+
+/* 夜の森 */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: var(--color-forest);
+  --foreground: var(--color-ivory);
+  --card: #283527;
+  --card-foreground: var(--color-ivory);
+  --popover: #283527;
+  --popover-foreground: var(--color-ivory);
+  --primary: var(--color-gold);
+  --primary-foreground: var(--color-forest);
+  --secondary: #334131;
+  --secondary-foreground: var(--color-ivory);
+  --muted: #2c392b;
+  --muted-foreground: #b9bfa6;
+  --accent: #3a4630;
+  --accent-foreground: var(--color-ivory);
+  --destructive: #e07a63;
+  --border: rgb(247 243 232 / 12%);
+  --input: rgb(247 243 232 / 18%);
+  --ring: var(--color-gold);
+  --chart-1: #9aa872;
+  --chart-2: var(--color-gold);
+  --chart-3: var(--color-orange);
+  --chart-4: #c9d1a8;
+  --chart-5: #e8c873;
+  --sidebar: #1a2419;
+  --sidebar-foreground: var(--color-ivory);
+  --sidebar-primary: var(--color-gold);
+  --sidebar-primary-foreground: var(--color-forest);
+  --sidebar-accent: #334131;
+  --sidebar-accent-foreground: var(--color-ivory);
+  --sidebar-border: rgb(247 243 232 / 12%);
+  --sidebar-ring: var(--color-gold);
 }
 
 @layer base {
@@ -122,9 +149,28 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground leading-relaxed;
   }
   html {
     @apply font-sans;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading font-medium tracking-wide;
+    /* かなの字間をつめて、明朝の見出しをきれいに見せる */
+    font-feature-settings: "palt";
+  }
+}
+
+/* 「動きを減らす」設定の人には、アニメーションをしない */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
