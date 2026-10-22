@@ -57,28 +57,35 @@ export default async function HomePage() {
             <span>SHWE</span> <span>THA</span> <span>ZIN</span>
           </h1>
 
-          {/* 母（ミャー）のマスコットと、手書きのメモのような小さいあいさつ */}
+          {/* 母（ミャー）のマスコットと、小さいふきだしのあいさつ */}
           {/* 右はしは、ヘッダーの「予約する」の右はしとそろえる（同じ max-w-6xl px-5） */}
-          <figure className="mt-12 flex flex-col items-end lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-center">
+          <figure className="relative mt-12 flex flex-col items-end lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-center">
+            {/* ふきだし：スマホ〜タブレットはミャーの頭の上、広い画面（xl）は頭の左。ミャーのあとに、しずかに出る */}
+            <figcaption className="relative z-10 mr-[15%] mb-4 animate-bloom [animation-delay:1400ms] sm:mr-24 lg:mr-28 xl:absolute xl:top-[24%] xl:right-[calc(20rem+0.875rem)] xl:z-10 xl:mr-0 xl:mb-0">
+              <p className="relative rounded-xl border border-gold-deep/35 bg-ivory-soft px-4 py-2.5 font-heading text-sm leading-relaxed tracking-wide whitespace-nowrap text-forest-soft">
+                {hero.mascot.greeting.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
+                {/* しっぽ：下むき（頭の上のとき）と、右むき（頭の左のとき） */}
+                <span
+                  aria-hidden="true"
+                  className="absolute size-2.5 rotate-45 border-gold-deep/35 bg-ivory-soft right-10 -bottom-[5.5px] border-r border-b xl:hidden"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute size-2.5 rotate-45 border-gold-deep/35 bg-ivory-soft top-1/2 -right-[5.5px] hidden -translate-y-1/2 border-t border-r xl:block"
+                />
+              </p>
+            </figcaption>
             <Image
               src={photos.mya}
               alt={hero.mascot.alt}
-              sizes="(min-width: 1024px) 320px, (min-width: 640px) 300px, 62vw"
+              sizes="(min-width: 1024px) 320px, (min-width: 640px) 280px, 54vw"
               preload
               className="h-auto w-[54%] max-w-[17.5rem] animate-bloom [animation-delay:600ms] [animation-duration:1.6s] sm:w-[17.5rem] lg:w-80 lg:max-w-none"
             />
-            {/* ミャーの下の右がわに。金の引き出し線はミャーのほうへ */}
-            <figcaption className="mt-5 flex animate-bloom items-center gap-3 [animation-delay:1100ms]">
-              {/* 手書きのメモのように、1 行ずつ */}
-              <p className="font-heading text-base leading-relaxed tracking-wide text-forest-soft">
-                {hero.mascot.greeting.map((line) => (
-                  <span key={line} className="block">
-                    <Phrases>{line}</Phrases>
-                  </span>
-                ))}
-              </p>
-              <span aria-hidden="true" className="order-first h-px w-10 shrink-0 bg-gold" />
-            </figcaption>
           </figure>
 
           <div className="mt-14 max-w-md animate-bloom [animation-delay:300ms] lg:col-start-1 lg:row-start-2 lg:mt-12">
