@@ -48,7 +48,10 @@ const en: Dictionary = {
   // TODO: placeholder details. Replace with the shop's real details
   shop: {
     address: ["0-0-0 Placeholder, Osaka", "530-0000 (placeholder)"],
-    hours: ["11:00–21:00 (placeholder)", "Closed: one day a week (placeholder)"],
+    // One short line for the info bar
+    addressShort: "0-0-0 Placeholder, Osaka (placeholder)",
+    hours: "11:00–21:00 (placeholder)",
+    closed: "Closed: one day a week (placeholder)",
     phone: "00-0000-0000 (placeholder)",
   },
   info: {
@@ -56,7 +59,6 @@ const en: Dictionary = {
     location: "Locate us",
     hours: "Open hours",
     reservation: "Reservation",
-    reservationLink: "Go to the reservation form",
   },
   // TODO: placeholder dish names and descriptions. Replace with the shop's own words
   menu: {

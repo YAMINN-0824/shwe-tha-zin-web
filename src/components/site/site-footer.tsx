@@ -11,7 +11,7 @@ export function SiteFooter({
 }) {
   const items = [
     { label: footer.addressLabel, lines: shop.address },
-    { label: footer.hoursLabel, lines: shop.hours },
+    { label: footer.hoursLabel, lines: [shop.hours, shop.closed] },
     { label: footer.phoneLabel, lines: [shop.phone] },
   ];
 

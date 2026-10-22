@@ -42,10 +42,11 @@ export default async function HomePage() {
   const showEvent = await isThadingyutEventOpen();
   const reserveHref = `/${locale}#reservation`;
 
+  // お店の情報の帯。くわしい文字は 1 行だけ。ご予約は、全体がフォームへのリンク
   const infoItems = [
-    { icon: MapPin, title: info.location, lines: shop.address, reserveLink: false },
-    { icon: Clock, title: info.hours, lines: shop.hours, reserveLink: false },
-    { icon: CalendarCheck, title: info.reservation, lines: [shop.phone], reserveLink: true },
+    { icon: MapPin, title: info.location, detail: shop.addressShort, href: null },
+    { icon: Clock, title: info.hours, detail: shop.hours, href: null },
+    { icon: CalendarCheck, title: info.reservation, detail: shop.phone, href: reserveHref },
   ];
 
   return (
@@ -113,7 +114,7 @@ export default async function HomePage() {
         aria-labelledby="about-heading"
         className="scroll-mt-10 bg-parchment"
       >
-        <div className="mx-auto grid max-w-6xl gap-12 px-5 pt-20 pb-32 md:grid-cols-[2fr_3fr] md:items-center md:gap-16 md:pt-32 md:pb-44">
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 md:grid-cols-[2fr_3fr] md:items-center md:gap-16 md:py-32">
           <div>
             <SectionHeading
               id="about-heading"
@@ -144,48 +145,60 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3. お店の情報の帯。パーチメントの帯のふちに重ねる */}
+      {/* 3. お店の情報の帯。アイボリーの上だけに置く */}
       <section
         aria-labelledby="info-heading"
-        className="relative mx-auto -mt-16 max-w-6xl px-5 md:-mt-20"
+        className="relative mx-auto max-w-6xl px-5 pt-20 md:pt-28"
       >
         <h2 id="info-heading" className="sr-only">
           {info.heading}
         </h2>
-        {/* うしろの、ごくうすい金の光（影ではなくグラデーション） */}
-        <span
-          aria-hidden="true"
-          className="absolute inset-x-0 -inset-y-10 bg-[radial-gradient(closest-side,rgb(217_169_46/0.16),rgb(217_169_46/0))]"
-        />
-        <ul className="relative grid divide-y divide-gold/25 rounded-lg border border-gold/25 bg-ivory-soft md:grid-cols-3 md:divide-x md:divide-y-0">
-          {infoItems.map((item) => (
-            <li key={item.title} className="flex gap-4 px-6 py-6 md:px-8 md:py-8">
-              <item.icon
-                aria-hidden="true"
-                strokeWidth={iconStroke}
-                className="mt-0.5 size-6 shrink-0 text-gold"
-              />
-              <div>
-                <h3 className="text-lg leading-snug">{item.title}</h3>
-                <div className="mt-2 flex flex-col gap-0.5 text-sm leading-relaxed text-gold-deep">
-                  {item.lines.map((line) => (
-                    <p key={line}>
-                      <Phrases>{line}</Phrases>
+        <div className="relative">
+          {/* 帯のまん中から、上と下へ広がる、やわらかい金の光（影ではなくグラデーション） */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 -inset-y-16 bg-[radial-gradient(closest-side,rgb(217_169_46/0.26),rgb(217_169_46/0.1)_55%,rgb(217_169_46/0))] md:-inset-y-24"
+          />
+          <ul className="relative grid gap-2 rounded-xl border border-gold/40 px-3 py-3 md:grid-cols-3 md:gap-4 md:px-6 md:py-6">
+            {infoItems.map((item) => {
+              const content = (
+                <>
+                  <item.icon
+                    aria-hidden="true"
+                    absoluteStrokeWidth
+                    strokeWidth={iconStroke}
+                    className="size-12 shrink-0 text-forest"
+                  />
+                  <div>
+                    <h3 className="text-lg leading-snug">{item.title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-gold-deep">
+                      {item.detail}
                     </p>
-                  ))}
-                  {item.reserveLink && (
+                  </div>
+                </>
+              );
+              const itemClass =
+                "flex items-center gap-4 rounded-lg px-3 py-3 md:justify-center md:py-2";
+              return (
+                <li key={item.title}>
+                  {item.href ? (
                     <Link
-                      href={reserveHref}
-                      className="mt-1 w-fit rounded-sm underline decoration-gold/60 underline-offset-[0.35em] transition-colors duration-300 hover:text-forest focus-visible:outline-2 focus-visible:outline-ring"
+                      href={item.href}
+                      className={cn(
+                        itemClass,
+                        "transition-colors duration-300 hover:bg-gold/10 focus-visible:outline-2 focus-visible:outline-ring",
+                      )}
                     >
-                      {info.reservationLink}
+                      {content}
                     </Link>
+                  ) : (
+                    <div className={itemClass}>{content}</div>
                   )}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </section>
 
       {/* 4. メニュー：左右にジグザグ */}
