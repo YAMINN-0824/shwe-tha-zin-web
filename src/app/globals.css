@@ -61,6 +61,8 @@
   /* 花が開くような、ゆっくりしたフェードイン */
   --ease-bloom: cubic-bezier(0.22, 1, 0.36, 1);
   --animate-bloom: bloom 1.2s var(--ease-bloom) both;
+  /* 茎の線が上から下へのびる */
+  --animate-stem-grow: stem-grow 1.6s var(--ease-bloom) both;
 
   @keyframes bloom {
     from {
@@ -70,6 +72,15 @@
     to {
       opacity: 1;
       transform: none;
+    }
+  }
+
+  @keyframes stem-grow {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
     }
   }
 }
@@ -169,6 +180,7 @@
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;

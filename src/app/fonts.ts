@@ -1,6 +1,4 @@
-import type { Metadata } from "next";
 import { Shippori_Mincho, Zen_Kaku_Gothic_New } from "next/font/google";
-import "./globals.css";
 
 // フォントについては DESIGN.md を見る
 // 日本語のフォントはファイルが大きいので、preload しない（使う文字の分だけ読み込まれる）
@@ -20,18 +18,5 @@ const zenKakuGothic = Zen_Kaku_Gothic_New({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "SHWE THA ZIN",
-  description: "飲食店 SHWE THA ZIN",
-};
-
-export default function RootLayout({ children }: LayoutProps<"/">) {
-  return (
-    <html
-      lang="ja"
-      className={`${shipporiMincho.variable} ${zenKakuGothic.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
-  );
-}
+// <html> の className に入れる
+export const fontVariables = `${shipporiMincho.variable} ${zenKakuGothic.variable}`;
