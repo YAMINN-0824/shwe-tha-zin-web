@@ -185,6 +185,9 @@
   }
   html {
     @apply font-sans;
+    /* ヘッダーのリンク（#menu、#reservation）で、なめらかにスクロール
+       「動きを減らす」設定では、下で auto にもどす */
+    scroll-behavior: smooth;
   }
   /* 日本語の本文：かなの字間を少しつめて、読みやすくする（見出しは下で上書き） */
   html:lang(ja) body {

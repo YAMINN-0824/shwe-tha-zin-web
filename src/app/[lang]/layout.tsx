@@ -25,7 +25,12 @@ export default async function SiteLayout({ children }: LayoutProps<"/[lang]">) {
   const dict = await getDictionary();
 
   return (
-    <html lang={locale} className={`${fontVariables} h-full antialiased`}>
+    // data-scroll-behavior：ページを移るときは、すぐに上へ。#menu などへは、なめらかに
+    <html
+      lang={locale}
+      data-scroll-behavior="smooth"
+      className={`${fontVariables} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col">
         <SiteHeader locale={locale} nav={dict.nav} />
         <div className="flex flex-1 flex-col">{children}</div>

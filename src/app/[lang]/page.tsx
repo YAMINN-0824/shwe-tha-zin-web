@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
 import { HandDrawnCircle } from "@/components/site/hand-drawn-circle";
 import { MistReveal } from "@/components/site/mist-reveal";
 import { Phrases } from "@/components/site/phrases";
@@ -23,7 +22,6 @@ import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { MAX_PARTY_SIZE, isThadingyutEventOpen, reservationSlots } from "@/lib/shop";
 import { cn } from "@/lib/utils";
 
-const reserveClass = cn(buttonVariants({ size: "lg" }), "h-11 px-6 text-base");
 const menuLinkClass =
   "inline-block rounded-sm text-lg text-leaf-deep underline decoration-leaf/50 underline-offset-[0.4em] transition-colors duration-300 hover:text-forest hover:decoration-forest focus-visible:outline-2 focus-visible:outline-ring";
 // 細い線のアイコン（DESIGN.md「アイコン」）
@@ -38,7 +36,7 @@ const offerIcons: Record<OfferIcon, LucideIcon> = {
 export default async function HomePage() {
   const locale = await getLocale();
   const dict = await getDictionary();
-  const { nav, hero, about, shop, info, menu, offer, event, reserve } = dict;
+  const { hero, about, shop, info, menu, offer, event, reserve } = dict;
   const showEvent = await isThadingyutEventOpen();
   const reserveHref = `/${locale}#reservation`;
 
@@ -59,33 +57,32 @@ export default async function HomePage() {
             <span>SHWE</span> <span>THA</span> <span>ZIN</span>
           </h1>
 
-          <figure className="mt-10 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-center">
-            <Plate
-              src={photos.laphet}
-              alt={hero.signature.alt}
-              sizes="(min-width: 1152px) 660px, (min-width: 1024px) 58vw, (min-width: 640px) 576px, 92vw"
+          {/* 母（ミャー）のマスコットと、手書きのメモのような小さいあいさつ */}
+          {/* 右はしは、ヘッダーの「予約する」の右はしとそろえる（同じ max-w-6xl px-5） */}
+          <figure className="mt-12 flex flex-col items-end lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-center">
+            <Image
+              src={photos.mya}
+              alt={hero.mascot.alt}
+              sizes="(min-width: 1024px) 320px, (min-width: 640px) 300px, 62vw"
               preload
-              className="ml-auto w-[92%] max-w-xl translate-x-[10%] animate-bloom [animation-delay:600ms] [animation-duration:1.6s] lg:w-full lg:translate-x-[8%]"
+              className="h-auto w-[54%] max-w-[17.5rem] animate-bloom [animation-delay:600ms] [animation-duration:1.6s] sm:w-[17.5rem] lg:w-80 lg:max-w-none"
             />
-            <figcaption className="mt-6 flex max-w-xs animate-bloom items-start gap-4 [animation-delay:1100ms] lg:ml-[8%]">
-              <span aria-hidden="true" className="mt-3.5 h-px w-10 shrink-0 bg-gold" />
-              <div>
-                <p className="flex items-center gap-2 text-sm text-forest-soft">
-                  <span aria-hidden="true" className="size-1.5 rounded-full bg-lacquer" />
-                  {hero.signature.label}
-                </p>
-                <p className="mt-1 font-heading text-xl tracking-wide">
-                  {hero.signature.name}
-                </p>
-                <p className="mt-1 text-sm leading-relaxed text-forest-soft">
-                  <Phrases>{hero.signature.description}</Phrases>
-                </p>
-              </div>
+            {/* ミャーの下の右がわに。金の引き出し線はミャーのほうへ */}
+            <figcaption className="mt-5 flex animate-bloom items-center gap-3 [animation-delay:1100ms]">
+              {/* 手書きのメモのように、1 行ずつ */}
+              <p className="font-heading text-base leading-relaxed tracking-wide text-forest-soft">
+                {hero.mascot.greeting.map((line) => (
+                  <span key={line} className="block">
+                    <Phrases>{line}</Phrases>
+                  </span>
+                ))}
+              </p>
+              <span aria-hidden="true" className="order-first h-px w-10 shrink-0 bg-gold" />
             </figcaption>
           </figure>
 
           <div className="mt-14 max-w-md animate-bloom [animation-delay:300ms] lg:col-start-1 lg:row-start-2 lg:mt-12">
-            <p className="font-heading text-2xl leading-relaxed tracking-wide lg:text-[1.75rem]">
+            <p className="font-heading text-2xl leading-[1.8] tracking-wide lg:text-[1.75rem]">
               {hero.lead.before}
               <HandDrawnCircle drawClassName="[animation-delay:1700ms]">
                 {hero.lead.mark}
@@ -96,14 +93,6 @@ export default async function HomePage() {
             <p className="mt-5 leading-loose text-forest-soft">
               <Phrases>{hero.meaning}</Phrases>
             </p>
-            <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
-              <Link href={reserveHref} className={reserveClass}>
-                {nav.reserve}
-              </Link>
-              <Link href={`/${locale}#menu`} className={menuLinkClass}>
-                {menu.label}
-              </Link>
-            </div>
           </div>
         </div>
       </section>

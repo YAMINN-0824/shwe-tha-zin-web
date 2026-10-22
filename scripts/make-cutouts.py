@@ -20,6 +20,8 @@ OUT = ROOT / "public" / "images"
 CUTOUTS = ["laphet", "rice-set", "fritters"]
 # そのまま使う写真（JPEG にして軽くする）
 PHOTOS = ["hometown-gate"]
+# はじめから背景がすけている絵（まわりの空いたところを切りとるだけ）
+TRIM_ONLY = ["mya"]
 
 # 背景とみなす色：明るくて（R・G・B のいちばん小さい値がこれ以上）
 LIGHT_THRESHOLD = 185
@@ -67,6 +69,16 @@ def cut_out(name: str) -> None:
     print(f"{name}.png  {result.size[0]}x{result.size[1]}")
 
 
+def trim(name: str) -> None:
+    image = Image.open(SRC / f"{name}.png").convert("RGBA")
+    alpha = image.getchannel("A")
+    bbox = alpha.point(lambda v: 255 if v > 8 else 0).getbbox()
+    if bbox:
+        image = image.crop(bbox)
+    image.save(OUT / f"{name}.png", optimize=True)
+    print(f"{name}.png  {image.size[0]}x{image.size[1]}")
+
+
 def to_jpeg(name: str) -> None:
     image = Image.open(SRC / f"{name}.png").convert("RGB")
     image.save(OUT / f"{name}.jpg", quality=85, optimize=True, progressive=True)
@@ -79,3 +91,5 @@ if __name__ == "__main__":
         cut_out(name)
     for name in PHOTOS:
         to_jpeg(name)
+    for name in TRIM_ONLY:
+        trim(name)

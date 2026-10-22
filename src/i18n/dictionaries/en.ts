@@ -26,12 +26,11 @@ const en: Dictionary = {
       after: " kitchen. ",
       close: "Take your time.",
     },
-    signature: {
-      label: "Most popular",
-      name: "Tea leaf salad",
-      // TODO: placeholder description. Replace with the shop's own words
-      description: "Fermented tea leaves, mixed with crunchy beans and nuts.",
-      alt: "A red lacquer tray with tea leaves, beans, nuts, tomato, chili and garlic in separate sections",
+    // The mascot of our mother (Mya), the chef
+    mascot: {
+      // TODO: placeholder greeting. Replace with the shop's own words (one item = one line)
+      greeting: ["I'm Mya.", "Welcome to my kitchen."],
+      alt: "An illustration of Mya in a chef's hat, smiling and holding a bowl of tea leaf salad",
     },
   },
   // TODO: placeholder text. Replace with the shop's real story
