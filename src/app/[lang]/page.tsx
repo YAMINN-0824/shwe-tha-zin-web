@@ -50,19 +50,11 @@ export default async function HomePage() {
     <main className="flex-1">
       {/* 1. ヒーロー。ページを開いたときの動き：ことば → ミャー → ふきだし → 金の丸 */}
       <section className="relative overflow-x-clip">
-        <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-10 pb-20 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:pt-16 lg:pb-28 xl:items-stretch">
-          {/* 左：いちばん大きいひとことと、名前の意味
-              広い画面（xl）では、ミャーの絵と上下をそろえる：ひとことの上＝コック帽の上、意味の下＝絵の下
-              （行の上下のすき間のぶん、少しずらして、字の見えるところでそろえる） */}
-          <div className="max-w-xl animate-bloom lg:max-w-[36.5rem] xl:flex xl:flex-col xl:justify-between">
+        <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-10 pb-20 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:pt-16 lg:pb-28">
+          {/* 左：いちばん大きいひとことと、名前の意味。1 つのまとまりで、ミャーと上下まん中にそろえる */}
+          <div className="max-w-xl animate-bloom lg:max-w-[36.5rem]">
             {/* text-balance：1 語だけの行ができないよう、行の長さをそろえる */}
-            {/* 英語の大文字は漢字より背がひくいので、少し多めに上げる */}
-            <h1
-              className={cn(
-                "text-[clamp(1.75rem,8vw,2.75rem)] leading-[1.6] tracking-wide text-balance",
-                locale === "en" ? "xl:-mt-[0.5em]" : "xl:-mt-[0.36em]",
-              )}
-            >
+            <h1 className="text-[clamp(1.75rem,8vw,2.75rem)] leading-[1.6] tracking-wide text-balance">
               {hero.lead.before}
               {/* 丸のことばと、そのあと（"mother's kitchen."）は、とちゅうで改行しない */}
               <span className="inline-block">
@@ -74,35 +66,31 @@ export default async function HomePage() {
               {hero.lead.gap}
               <span className="inline-block">{hero.lead.close}</span>
             </h1>
-            <p
-              className={cn(
-                "mt-6 max-w-md leading-loose text-forest-soft",
-                locale === "en" ? "xl:-mb-[0.3em]" : "xl:-mb-[0.55em]",
-              )}
-            >
+            <p className="mt-6 max-w-md leading-loose text-forest-soft">
               <Phrases>{hero.meaning}</Phrases>
             </p>
           </div>
 
           {/* 母（ミャー）のマスコットと、小さいふきだしのあいさつ */}
-          {/* 右はしは、ヘッダーの「予約する」の右はしとそろえる（同じ max-w-6xl px-5） */}
-          <figure className="relative mt-14 flex flex-col items-end lg:mt-0 xl:self-center">
-            {/* ふきだし：スマホ〜タブレットはミャーの頭の上、広い画面（xl）は頭の左。ミャーのあとに、しずかに出る */}
-            <figcaption className="relative z-10 mr-[15%] mb-4 animate-bloom [animation-delay:1400ms] sm:mr-24 lg:mr-28 xl:absolute xl:top-[24%] xl:right-[calc(20rem+0.875rem)] xl:z-10 xl:mr-0 xl:mb-0">
+          {/* 広い画面（xl）では、ミャーを少しまん中へ。右に、ふきだしのぶんだけあける（11.5rem） */}
+          <figure className="relative mt-14 flex flex-col items-end lg:mt-0 xl:mr-[11.5rem]">
+            {/* ふきだし：スマホ〜タブレットはミャーの頭の上、広い画面（xl）は頭の右（コック帽の横の、空いたところ）
+                ミャーのあとに、しずかに出る */}
+            <figcaption className="relative z-10 mr-[15%] mb-4 animate-bloom [animation-delay:1400ms] sm:mr-24 lg:mr-28 xl:absolute xl:top-[5%] xl:left-[calc(100%-3.2rem)] xl:mr-0 xl:mb-0">
               <p className="relative rounded-xl border border-gold-deep/35 bg-ivory-soft px-4 py-2.5 font-heading text-sm leading-relaxed tracking-wide whitespace-nowrap text-forest-soft">
                 {hero.mascot.greeting.map((line) => (
                   <span key={line} className="block">
                     {line}
                   </span>
                 ))}
-                {/* しっぽ：下むき（頭の上のとき）と、右むき（頭の左のとき） */}
+                {/* しっぽ：下むき（頭の上のとき）と、左むき（頭の右のとき）。どちらもミャーのほうへ */}
                 <span
                   aria-hidden="true"
                   className="absolute size-2.5 rotate-45 border-gold-deep/35 bg-ivory-soft right-10 -bottom-[5.5px] border-r border-b xl:hidden"
                 />
                 <span
                   aria-hidden="true"
-                  className="absolute size-2.5 rotate-45 border-gold-deep/35 bg-ivory-soft top-1/2 -right-[5.5px] hidden -translate-y-1/2 border-t border-r xl:block"
+                  className="absolute size-2.5 rotate-45 border-gold-deep/35 bg-ivory-soft top-[62%] -left-[5.5px] hidden -translate-y-1/2 border-b border-l xl:block"
                 />
               </p>
             </figcaption>
