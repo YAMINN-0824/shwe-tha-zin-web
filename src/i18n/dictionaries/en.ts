@@ -49,7 +49,7 @@ const en: Dictionary = {
   shop: {
     address: ["0-0-0 Placeholder, Osaka", "530-0000 (placeholder)"],
     // One short line for the info bar
-    addressShort: "0-0-0 Placeholder, Osaka (placeholder)",
+    addressShort: "Osaka 0-0-0 (placeholder)",
     hours: "11:00–21:00 (placeholder)",
     closed: "Closed: one day a week (placeholder)",
     phone: "00-0000-0000 (placeholder)",

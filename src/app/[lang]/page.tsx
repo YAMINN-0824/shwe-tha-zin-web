@@ -145,21 +145,19 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3. お店の情報の帯。アイボリーの上だけに置く */}
-      <section
-        aria-labelledby="info-heading"
-        className="relative mx-auto max-w-6xl px-5 pt-20 md:pt-28"
-      >
+      {/* 3. お店の情報の帯。アイボリーの上だけに置く。光が左右にはみ出してもスクロールが出ないよう clip */}
+      <section aria-labelledby="info-heading" className="overflow-x-clip pt-20 md:pt-28">
         <h2 id="info-heading" className="sr-only">
           {info.heading}
         </h2>
-        <div className="relative">
-          {/* 帯のまん中から、上と下へ広がる、やわらかい金の光（影ではなくグラデーション） */}
+        <div className="relative mx-auto max-w-6xl px-5">
+          {/* 帯の形にそった、横長のやわらかい金の光（影ではなくグラデーション）
+              まん中で gold/30 まで。これより濃いと gold-deep の文字が読みにくくなる */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 -inset-y-16 bg-[radial-gradient(closest-side,rgb(217_169_46/0.26),rgb(217_169_46/0.1)_55%,rgb(217_169_46/0))] md:-inset-y-24"
+            className="pointer-events-none absolute -inset-x-[4%] -inset-y-10 bg-[radial-gradient(ellipse_closest-side,rgb(217_169_46/0.3),rgb(217_169_46/0.16)_55%,rgb(217_169_46/0))] lg:-inset-x-[8%] lg:-inset-y-12"
           />
-          <ul className="relative grid gap-2 rounded-xl border border-gold/40 px-3 py-3 md:grid-cols-3 md:gap-4 md:px-6 md:py-6">
+          <ul className="relative grid rounded-[6px] border border-forest/15 px-2 py-1 lg:grid-cols-3 lg:px-4">
             {infoItems.map((item) => {
               const content = (
                 <>
@@ -167,18 +165,18 @@ export default async function HomePage() {
                     aria-hidden="true"
                     absoluteStrokeWidth
                     strokeWidth={iconStroke}
-                    className="size-12 shrink-0 text-forest"
+                    className="size-8 shrink-0 text-forest"
                   />
-                  <div>
+                  <div className="min-w-0">
                     <h3 className="text-lg leading-snug">{item.title}</h3>
-                    <p className="mt-1 text-sm leading-relaxed text-gold-deep">
+                    <p className="text-sm leading-normal text-gold-deep lg:whitespace-nowrap">
                       {item.detail}
                     </p>
                   </div>
                 </>
               );
               const itemClass =
-                "flex items-center gap-4 rounded-lg px-3 py-3 md:justify-center md:py-2";
+                "flex items-center gap-3.5 rounded-[4px] px-3 py-2 lg:justify-center";
               return (
                 <li key={item.title}>
                   {item.href ? (
