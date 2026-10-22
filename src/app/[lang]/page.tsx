@@ -50,13 +50,19 @@ export default async function HomePage() {
     <main className="flex-1">
       {/* 1. ヒーロー。ページを開いたときの動き：ことば → ミャー → ふきだし → 金の丸 */}
       <section className="relative overflow-x-clip">
-        <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-10 pb-20 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:pt-16 lg:pb-28">
-          {/* 左：セクションの見出しと同じ形。小さいラベル（お店の名前）→ 金の線 → いちばん大きいひとこと */}
-          <div className="max-w-xl animate-bloom lg:max-w-[36.5rem]">
-            <p className="font-heading tracking-[0.18em] text-gold-deep">SHWE THA ZIN</p>
-            <span aria-hidden="true" className="mt-3 block h-px w-8 bg-gold" />
+        <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-10 pb-20 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:pt-16 lg:pb-28 xl:items-stretch">
+          {/* 左：いちばん大きいひとことと、名前の意味
+              広い画面（xl）では、ミャーの絵と上下をそろえる：ひとことの上＝コック帽の上、意味の下＝絵の下
+              （行の上下のすき間のぶん、少しずらして、字の見えるところでそろえる） */}
+          <div className="max-w-xl animate-bloom lg:max-w-[36.5rem] xl:flex xl:flex-col xl:justify-between">
             {/* text-balance：1 語だけの行ができないよう、行の長さをそろえる */}
-            <h1 className="mt-6 text-[clamp(1.75rem,8vw,2.75rem)] leading-[1.6] tracking-wide text-balance">
+            {/* 英語の大文字は漢字より背がひくいので、少し多めに上げる */}
+            <h1
+              className={cn(
+                "text-[clamp(1.75rem,8vw,2.75rem)] leading-[1.6] tracking-wide text-balance",
+                locale === "en" ? "xl:-mt-[0.5em]" : "xl:-mt-[0.36em]",
+              )}
+            >
               {hero.lead.before}
               {/* 丸のことばと、そのあと（"mother's kitchen."）は、とちゅうで改行しない */}
               <span className="inline-block">
@@ -68,14 +74,19 @@ export default async function HomePage() {
               {hero.lead.gap}
               <span className="inline-block">{hero.lead.close}</span>
             </h1>
-            <p className="mt-6 max-w-md leading-loose text-forest-soft">
+            <p
+              className={cn(
+                "mt-6 max-w-md leading-loose text-forest-soft",
+                locale === "en" ? "xl:-mb-[0.3em]" : "xl:-mb-[0.55em]",
+              )}
+            >
               <Phrases>{hero.meaning}</Phrases>
             </p>
           </div>
 
           {/* 母（ミャー）のマスコットと、小さいふきだしのあいさつ */}
           {/* 右はしは、ヘッダーの「予約する」の右はしとそろえる（同じ max-w-6xl px-5） */}
-          <figure className="relative mt-14 flex flex-col items-end lg:mt-0">
+          <figure className="relative mt-14 flex flex-col items-end lg:mt-0 xl:self-center">
             {/* ふきだし：スマホ〜タブレットはミャーの頭の上、広い画面（xl）は頭の左。ミャーのあとに、しずかに出る */}
             <figcaption className="relative z-10 mr-[15%] mb-4 animate-bloom [animation-delay:1400ms] sm:mr-24 lg:mr-28 xl:absolute xl:top-[24%] xl:right-[calc(20rem+0.875rem)] xl:z-10 xl:mr-0 xl:mb-0">
               <p className="relative rounded-xl border border-gold-deep/35 bg-ivory-soft px-4 py-2.5 font-heading text-sm leading-relaxed tracking-wide whitespace-nowrap text-forest-soft">
