@@ -66,8 +66,6 @@
   --animate-bloom: bloom 1.2s var(--ease-bloom) both;
   /* 金の手がきの丸が、線をえがくように出てくる */
   --animate-draw: draw 1.4s var(--ease-bloom) both;
-  /* 金の花粉が、ゆっくりただよう */
-  --animate-pollen: pollen 26s ease-in-out infinite;
 
   @keyframes bloom {
     from {
@@ -87,21 +85,6 @@
     }
     to {
       stroke-dashoffset: 0;
-    }
-  }
-
-  @keyframes pollen {
-    0%,
-    100% {
-      opacity: 0;
-      transform: translate(0, 0);
-    }
-    20%,
-    80% {
-      opacity: 0.7;
-    }
-    50% {
-      transform: translate(1.5rem, -3rem);
     }
   }
 }

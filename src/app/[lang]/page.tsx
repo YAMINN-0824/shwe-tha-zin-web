@@ -14,7 +14,6 @@ import { MistReveal } from "@/components/site/mist-reveal";
 import { Phrases } from "@/components/site/phrases";
 import { photos } from "@/components/site/photos";
 import { Plate } from "@/components/site/plate";
-import { Pollen } from "@/components/site/pollen";
 import { ReservationForm } from "@/components/site/reservation-form";
 import { SectionHeading } from "@/components/site/section-heading";
 import type { OfferIcon } from "@/i18n/dictionaries/ja";
@@ -49,17 +48,34 @@ export default async function HomePage() {
 
   return (
     <main className="flex-1">
-      {/* 1. ヒーロー。ページを開いたときの動き：名前 → 写真 → 金の丸 */}
+      {/* 1. ヒーロー。ページを開いたときの動き：ことば → ミャー → ふきだし → 金の丸 */}
       <section className="relative overflow-x-clip">
-        <Pollen />
-        <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-8 pb-20 lg:grid-cols-[1fr_1.15fr] lg:grid-rows-[auto_1fr] lg:pt-16 lg:pb-28">
-          <h1 className="flex animate-bloom flex-col text-[clamp(3.5rem,17vw,7.5rem)] leading-none tracking-[0.12em] lg:self-end">
-            <span>SHWE</span> <span>THA</span> <span>ZIN</span>
-          </h1>
+        <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-10 pb-20 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:pt-16 lg:pb-28">
+          {/* 左：セクションの見出しと同じ形。小さいラベル（お店の名前）→ 金の線 → いちばん大きいひとこと */}
+          <div className="max-w-xl animate-bloom lg:max-w-[36.5rem]">
+            <p className="font-heading tracking-[0.18em] text-gold-deep">SHWE THA ZIN</p>
+            <span aria-hidden="true" className="mt-3 block h-px w-8 bg-gold" />
+            {/* text-balance：1 語だけの行ができないよう、行の長さをそろえる */}
+            <h1 className="mt-6 text-[clamp(1.75rem,8vw,2.75rem)] leading-[1.6] tracking-wide text-balance">
+              {hero.lead.before}
+              {/* 丸のことばと、そのあと（"mother's kitchen."）は、とちゅうで改行しない */}
+              <span className="inline-block">
+                <HandDrawnCircle drawClassName="[animation-delay:1700ms]">
+                  {hero.lead.mark}
+                </HandDrawnCircle>
+                {hero.lead.after}
+              </span>
+              {hero.lead.gap}
+              <span className="inline-block">{hero.lead.close}</span>
+            </h1>
+            <p className="mt-6 max-w-md leading-loose text-forest-soft">
+              <Phrases>{hero.meaning}</Phrases>
+            </p>
+          </div>
 
           {/* 母（ミャー）のマスコットと、小さいふきだしのあいさつ */}
           {/* 右はしは、ヘッダーの「予約する」の右はしとそろえる（同じ max-w-6xl px-5） */}
-          <figure className="relative mt-12 flex flex-col items-end lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-center">
+          <figure className="relative mt-14 flex flex-col items-end lg:mt-0">
             {/* ふきだし：スマホ〜タブレットはミャーの頭の上、広い画面（xl）は頭の左。ミャーのあとに、しずかに出る */}
             <figcaption className="relative z-10 mr-[15%] mb-4 animate-bloom [animation-delay:1400ms] sm:mr-24 lg:mr-28 xl:absolute xl:top-[24%] xl:right-[calc(20rem+0.875rem)] xl:z-10 xl:mr-0 xl:mb-0">
               <p className="relative rounded-xl border border-gold-deep/35 bg-ivory-soft px-4 py-2.5 font-heading text-sm leading-relaxed tracking-wide whitespace-nowrap text-forest-soft">
@@ -88,19 +104,6 @@ export default async function HomePage() {
             />
           </figure>
 
-          <div className="mt-14 max-w-md animate-bloom [animation-delay:300ms] lg:col-start-1 lg:row-start-2 lg:mt-12">
-            <p className="font-heading text-2xl leading-[1.8] tracking-wide lg:text-[1.75rem]">
-              {hero.lead.before}
-              <HandDrawnCircle drawClassName="[animation-delay:1700ms]">
-                {hero.lead.mark}
-              </HandDrawnCircle>
-              {hero.lead.after}
-              <span className="inline-block">{hero.lead.close}</span>
-            </p>
-            <p className="mt-5 leading-loose text-forest-soft">
-              <Phrases>{hero.meaning}</Phrases>
-            </p>
-          </div>
         </div>
       </section>
 

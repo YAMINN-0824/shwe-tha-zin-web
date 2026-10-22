@@ -23,7 +23,9 @@ const en: Dictionary = {
     lead: {
       before: "Home cooking from our ",
       mark: "mother's",
-      after: " kitchen. ",
+      after: " kitchen.",
+      // Between "after" and "close" (a space in English, nothing in Japanese)
+      gap: " ",
       close: "Take your time.",
     },
     // The mascot of our mother (Mya), the chef
