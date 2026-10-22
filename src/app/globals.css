@@ -50,6 +50,7 @@
 /* タザンのランと、ラペットゥのうるしのお盆の色（くわしくは DESIGN.md） */
 @theme {
   --color-ivory: #f7f3e8; /* 花びら：背景 */
+  --color-ivory-soft: #fbf8f0; /* お店の情報の帯、フォームの欄 */
   --color-parchment: #efe8d6; /* カード、セクションの背景 */
   --color-forest: #1f2a1e; /* 森の緑：文字、フッター */
   --color-forest-soft: #5c6650; /* サブの文字 */
@@ -184,15 +185,24 @@
   html {
     @apply font-sans;
   }
+  /* 日本語の本文：かなの字間を少しつめて、読みやすくする（見出しは下で上書き） */
+  html:lang(ja) body {
+    font-feature-settings: "palt";
+    letter-spacing: 0.02em;
+  }
   h1,
   h2,
   h3 {
     @apply font-heading font-medium tracking-wide;
     /* かなの字間をつめて、明朝の見出しをきれいに見せる */
     font-feature-settings: "palt";
-    /* 日本語の見出しを、ことばのとちゅうで改行しない（対応しているブラウザだけ） */
-    word-break: auto-phrase;
   }
+}
+
+/* <Phrases>：文節の間（<wbr>）だけで改行する。長すぎるときは、はみ出さないよう折る */
+.phrases {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 /* 「動きを減らす」設定の人には、アニメーションをしない */

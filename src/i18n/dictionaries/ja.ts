@@ -1,5 +1,8 @@
 import type { PhotoName } from "@/components/site/photos";
 
+// サービスのアイコン（src/app/[lang]/page.tsx で絵にする）
+export type OfferIcon = "events" | "special" | "delivery";
+
 // 日本語のページの文章。en.ts も同じ形にする（型でチェックされる）
 const ja = {
   meta: {
@@ -29,10 +32,35 @@ const ja = {
       alt: "うるしの赤いお盆に、茶葉、豆、ナッツ、トマト、とうがらし、にんにくが分けて盛られている",
     },
   },
+  // TODO: 仮の文章。お店の本当の話に入れかえる
+  about: {
+    label: "私たちについて",
+    heading: "母のふるさとから",
+    body: [
+      "母が家族のために作ってきた料理を、そのままお出ししています。",
+      "急がなくて大丈夫です。あたたかいごはんと、静かな時間をどうぞ。",
+    ],
+    photoAlt: "木の並ぶまっすぐな道にかかる、赤と金の大きな門",
+    photoCaption: "母のふるさとの入り口にある門",
+  },
+  // TODO: 仮の情報。お店の本当の情報に入れかえる（フッターと、お店の情報の帯で使う）
+  shop: {
+    address: ["〒530-0000", "大阪府大阪市〇〇区〇〇 0-0-0（仮）"],
+    hours: ["11:00〜21:00（仮）", "定休日：〇曜日（仮）"],
+    phone: "00-0000-0000（仮）",
+  },
+  info: {
+    heading: "お店の情報",
+    location: "お店の場所",
+    hours: "営業時間",
+    reservation: "ご予約",
+    reservationLink: "予約フォームへ",
+  },
   // TODO: 仮の料理名と説明。お店の言葉に入れかえる
-  featured: {
-    label: "母の台所から",
+  menu: {
+    label: "メニュー",
     heading: "家族で囲む、いつもの料理",
+    action: "メニューをすべて見る",
     items: [
       {
         image: "rice-set" as PhotoName,
@@ -48,34 +76,87 @@ const ja = {
       },
     ],
   },
-  // TODO: 仮の文章。お店の本当の話に入れかえる
-  about: {
-    label: "私たちについて",
-    heading: "母のふるさとから",
-    body: [
-      "母が家族のために作ってきた料理を、そのままお出ししています。",
-      "急がなくて大丈夫です。あたたかいごはんと、静かな時間をどうぞ。",
+  // TODO: 仮の文章。お店の言葉に入れかえる
+  offer: {
+    label: "お店でできること",
+    heading: "食事のほかにも",
+    items: [
+      {
+        icon: "events" as OfferIcon,
+        title: "イベント",
+        body: "ミャンマーのお祭りの日に、特別な食事の会をひらきます。",
+      },
+      {
+        icon: "special" as OfferIcon,
+        title: "特別メニュー",
+        body: "お祝いの日や季節に合わせた料理を、ご相談ください。",
+      },
+      // TODO: confirm if delivery is really offered before going live
+      // （今は表示だけ。注文の仕組みはない）
+      {
+        icon: "delivery" as OfferIcon,
+        title: "デリバリー",
+        body: "お店の味を、ご自宅でも。",
+      },
     ],
-    photoAlt: "木の並ぶまっすぐな道にかかる、赤と金の大きな門",
-    photoCaption: "母のふるさとの入り口にある門",
+  },
+  event: {
+    label: "イベント",
+    heading: "タディンジュット祭り",
+    subheading: "ミャンマーの光の祭り",
+    offer: "祭りのあいだ、ラペットゥ（お茶の葉のサラダ）を無料でお出しします。",
+    body: "満月の夜に、家や町に灯りをともして、両親や年上の人に感謝を伝えるお祭りです。",
+    // TODO: 始まる日と条件は仮。お店に確認して入れかえる
+    periodLabel: "期間",
+    period: "〇月〇日（仮）〜11月1日",
+    conditionsLabel: "条件",
+    conditions: "店内でお食事の方、お一人さま一皿（仮）",
+    alt: "うるしの赤いお盆に盛られた、ラペットゥ（お茶の葉のサラダ）",
   },
   reserve: {
     label: "ご予約",
     heading: "お席を用意して、お待ちしています",
     body: "日にちと人数を選んで、リクエストを送ってください。お店から確認のご連絡をします。",
+    form: {
+      name: "お名前",
+      phone: "電話番号",
+      email: "メールアドレス",
+      optional: "任意",
+      partySize: "人数",
+      partySizeSuffix: "名",
+      partySizeSummary: "{count}名",
+      date: "日にち",
+      time: "時間",
+      choose: "選んでください",
+      note: "ご要望",
+      notePlaceholder: "アレルギーや、お祝いの予定など",
+      // ロボット対策の見えない欄（人には見えない）
+      honeypot: "この欄は空のままにしてください",
+      submit: "予約をリクエストする",
+      submitting: "送っています…",
+      errors: {
+        name: "お名前を入れてください（100 文字まで）",
+        phone: "電話番号を、数字で入れてください",
+        email: "メールアドレスの形がちがいます",
+        partySize: "人数を選んでください",
+        date: "日にちを選んでください",
+        time: "時間を選んでください",
+        past: "これから先の日にちと時間を選んでください",
+        note: "ご要望は 500 文字までにしてください",
+        failed:
+          "送れませんでした。少し時間をおいて、もう一度お試しください。急ぎの方はお電話ください。",
+      },
+      success: {
+        heading: "リクエストを受け付けました",
+        body: "お店から、確認のご連絡をします。ご連絡があるまで、予約はまだ決まっていません。",
+        again: "別の予約をリクエストする",
+      },
+    },
   },
-  actions: {
-    menu: "メニューを見る",
-    reserve: "予約する",
-  },
-  // TODO: 仮の情報。お店の本当の情報に入れかえる
   footer: {
     addressLabel: "住所",
-    address: "〒000-0000 東京都〇〇区〇〇 0-0-0（仮）",
     hoursLabel: "営業時間",
-    hours: ["11:00〜21:00（仮）", "定休日：〇曜日（仮）"],
     phoneLabel: "電話",
-    phone: "00-0000-0000（仮）",
   },
   notFound: {
     heading: "ページが見つかりません",

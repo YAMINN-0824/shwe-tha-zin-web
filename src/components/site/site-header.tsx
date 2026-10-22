@@ -18,7 +18,7 @@ export function SiteHeader({
   nav: Dictionary["nav"];
 }) {
   const links = [
-    { href: `/${locale}/menu`, label: nav.menu },
+    { href: `/${locale}#menu`, label: nav.menu },
     { href: `/${locale}#about`, label: nav.about },
   ];
   const reserveClass = cn(buttonVariants({ size: "lg" }), "px-4");
@@ -47,7 +47,7 @@ export function SiteHeader({
             ))}
           </nav>
           <LanguageSwitch locale={locale} label={nav.language} />
-          <Link href={`/${locale}/reservation`} className={reserveClass}>
+          <Link href={`/${locale}#reservation`} className={reserveClass}>
             {nav.reserve}
           </Link>
         </div>
@@ -71,7 +71,7 @@ export function SiteHeader({
             className="mt-6 text-base"
           />
           <Link
-            href={`/${locale}/reservation`}
+            href={`/${locale}#reservation`}
             className={cn(reserveClass, "mt-8 w-full")}
           >
             {nav.reserve}

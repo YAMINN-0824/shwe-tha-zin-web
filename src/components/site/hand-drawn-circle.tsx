@@ -12,14 +12,15 @@ export function HandDrawnCircle({
   drawClassName?: string;
 }) {
   return (
-    <span className="relative inline-block">
+    // 丸がとなりの字にさわらないよう、左右に少しあける
+    <span className="relative mx-[0.22em] inline-block">
       {children}
       <svg
         aria-hidden="true"
         viewBox="0 0 100 60"
         preserveAspectRatio="none"
         fill="none"
-        className="pointer-events-none absolute top-[-0.26em] left-[-0.34em] h-[calc(100%+0.52em)] w-[calc(100%+0.68em)] overflow-visible stroke-gold"
+        className="pointer-events-none absolute top-[calc(50%-0.72em)] left-[-0.2em] h-[1.44em] w-[calc(100%+0.4em)] overflow-visible stroke-gold"
       >
         {/* 手でかいたように、少しゆがんで、かき終わりが重なる線 */}
         <path

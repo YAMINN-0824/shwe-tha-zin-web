@@ -1,28 +1,56 @@
+import {
+  Bike,
+  CalendarCheck,
+  CalendarHeart,
+  ChefHat,
+  Clock,
+  MapPin,
+  type LucideIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { HandDrawnCircle } from "@/components/site/hand-drawn-circle";
 import { MistReveal } from "@/components/site/mist-reveal";
+import { Phrases } from "@/components/site/phrases";
 import { photos } from "@/components/site/photos";
 import { Plate } from "@/components/site/plate";
 import { Pollen } from "@/components/site/pollen";
+import { ReservationForm } from "@/components/site/reservation-form";
 import { SectionHeading } from "@/components/site/section-heading";
+import type { OfferIcon } from "@/i18n/dictionaries/ja";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
+import { MAX_PARTY_SIZE, isThadingyutEventOpen, reservationSlots } from "@/lib/shop";
 import { cn } from "@/lib/utils";
 
 const reserveClass = cn(buttonVariants({ size: "lg" }), "h-11 px-6 text-base");
 const menuLinkClass =
   "inline-block rounded-sm text-lg text-leaf-deep underline decoration-leaf/50 underline-offset-[0.4em] transition-colors duration-300 hover:text-forest hover:decoration-forest focus-visible:outline-2 focus-visible:outline-ring";
+// 細い線のアイコン（DESIGN.md「アイコン」）
+const iconStroke = 1.25;
+
+const offerIcons: Record<OfferIcon, LucideIcon> = {
+  events: CalendarHeart,
+  special: ChefHat,
+  delivery: Bike,
+};
 
 export default async function HomePage() {
   const locale = await getLocale();
-  const { hero, featured, about, reserve, actions } = await getDictionary();
-  const menuHref = `/${locale}/menu`;
-  const reserveHref = `/${locale}/reservation`;
+  const dict = await getDictionary();
+  const { nav, hero, about, shop, info, menu, offer, event, reserve } = dict;
+  const showEvent = await isThadingyutEventOpen();
+  const reserveHref = `/${locale}#reservation`;
+
+  const infoItems = [
+    { icon: MapPin, title: info.location, lines: shop.address, reserveLink: false },
+    { icon: Clock, title: info.hours, lines: shop.hours, reserveLink: false },
+    { icon: CalendarCheck, title: info.reservation, lines: [shop.phone], reserveLink: true },
+  ];
 
   return (
     <main className="flex-1">
-      {/* ヒーロー。ページを開いたときの動き：名前 → 写真 → 金の丸 */}
+      {/* 1. ヒーロー。ページを開いたときの動き：名前 → 写真 → 金の丸 */}
       <section className="relative overflow-x-clip">
         <Pollen />
         <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-8 pb-20 lg:grid-cols-[1fr_1.15fr] lg:grid-rows-[auto_1fr] lg:pt-16 lg:pb-28">
@@ -49,7 +77,7 @@ export default async function HomePage() {
                   {hero.signature.name}
                 </p>
                 <p className="mt-1 text-sm leading-relaxed text-forest-soft">
-                  {hero.signature.description}
+                  <Phrases>{hero.signature.description}</Phrases>
                 </p>
               </div>
             </figcaption>
@@ -64,31 +92,111 @@ export default async function HomePage() {
               {hero.lead.after}
               <span className="inline-block">{hero.lead.close}</span>
             </p>
-            <p className="mt-5 leading-loose text-forest-soft">{hero.meaning}</p>
+            <p className="mt-5 leading-loose text-forest-soft">
+              <Phrases>{hero.meaning}</Phrases>
+            </p>
             <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
               <Link href={reserveHref} className={reserveClass}>
-                {actions.reserve}
+                {nav.reserve}
               </Link>
-              <Link href={menuHref} className={menuLinkClass}>
-                {actions.menu}
+              <Link href={`/${locale}#menu`} className={menuLinkClass}>
+                {menu.label}
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 料理：左右にジグザグ */}
+      {/* 2. 私たちについて。スクロールしたときの動き：霧が晴れる */}
       <section
-        aria-labelledby="featured-heading"
-        className="mx-auto max-w-6xl overflow-x-clip px-5 py-20 md:py-32"
+        id="about"
+        aria-labelledby="about-heading"
+        className="scroll-mt-10 bg-parchment"
       >
-        <SectionHeading
-          id="featured-heading"
-          label={featured.label}
-          heading={featured.heading}
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 pt-20 pb-32 md:grid-cols-[2fr_3fr] md:items-center md:gap-16 md:pt-32 md:pb-44">
+          <div>
+            <SectionHeading
+              id="about-heading"
+              label={about.label}
+              heading={about.heading}
+            />
+            <div className="mt-8 flex flex-col gap-4 text-lg leading-loose">
+              {about.body.map((line) => (
+                <p key={line}>
+                  <Phrases>{line}</Phrases>
+                </p>
+              ))}
+            </div>
+          </div>
+          <figure>
+            <MistReveal className="rounded-lg">
+              <Image
+                src={photos["hometown-gate"]}
+                alt={about.photoAlt}
+                sizes="(min-width: 1152px) 660px, (min-width: 768px) 58vw, 100vw"
+                className="h-auto w-full"
+              />
+            </MistReveal>
+            <figcaption className="mt-3 text-sm text-forest-soft">
+              <Phrases>{about.photoCaption}</Phrases>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      {/* 3. お店の情報の帯。パーチメントの帯のふちに重ねる */}
+      <section
+        aria-labelledby="info-heading"
+        className="relative mx-auto -mt-16 max-w-6xl px-5 md:-mt-20"
+      >
+        <h2 id="info-heading" className="sr-only">
+          {info.heading}
+        </h2>
+        {/* うしろの、ごくうすい金の光（影ではなくグラデーション） */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 -inset-y-10 bg-[radial-gradient(closest-side,rgb(217_169_46/0.16),rgb(217_169_46/0))]"
         />
+        <ul className="relative grid divide-y divide-gold/25 rounded-lg border border-gold/25 bg-ivory-soft md:grid-cols-3 md:divide-x md:divide-y-0">
+          {infoItems.map((item) => (
+            <li key={item.title} className="flex gap-4 px-6 py-6 md:px-8 md:py-8">
+              <item.icon
+                aria-hidden="true"
+                strokeWidth={iconStroke}
+                className="mt-0.5 size-6 shrink-0 text-gold"
+              />
+              <div>
+                <h3 className="text-lg leading-snug">{item.title}</h3>
+                <div className="mt-2 flex flex-col gap-0.5 text-sm leading-relaxed text-gold-deep">
+                  {item.lines.map((line) => (
+                    <p key={line}>
+                      <Phrases>{line}</Phrases>
+                    </p>
+                  ))}
+                  {item.reserveLink && (
+                    <Link
+                      href={reserveHref}
+                      className="mt-1 w-fit rounded-sm underline decoration-gold/60 underline-offset-[0.35em] transition-colors duration-300 hover:text-forest focus-visible:outline-2 focus-visible:outline-ring"
+                    >
+                      {info.reservationLink}
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* 4. メニュー：左右にジグザグ */}
+      <section
+        id="menu"
+        aria-labelledby="menu-heading"
+        className="mx-auto max-w-6xl scroll-mt-10 overflow-x-clip px-5 py-20 md:py-32"
+      >
+        <SectionHeading id="menu-heading" label={menu.label} heading={menu.heading} />
         <ul className="mt-14 flex flex-col gap-20 md:mt-20 md:gap-0">
-          {featured.items.map((item, index) => {
+          {menu.items.map((item, index) => {
             const plateOnRight = index % 2 === 1;
             return (
               <li
@@ -115,71 +223,128 @@ export default async function HomePage() {
                     plateOnRight && "md:order-1 md:justify-self-end",
                   )}
                 >
-                  <h3 className="text-2xl leading-snug">{item.name}</h3>
+                  <h3 className="text-2xl leading-snug">
+                    <Phrases>{item.name}</Phrases>
+                  </h3>
                   <p className="mt-3 leading-relaxed text-forest-soft">
-                    {item.description}
+                    <Phrases>{item.description}</Phrases>
                   </p>
                 </div>
               </li>
             );
           })}
         </ul>
-        <Link href={menuHref} className={cn(menuLinkClass, "mt-16 md:mt-20")}>
-          {actions.menu}
+        {/* メニューのページは、これから作る */}
+        <Link href={`/${locale}/menu`} className={cn(menuLinkClass, "mt-16 md:mt-20")}>
+          {menu.action}
         </Link>
       </section>
 
-      {/* 私たちについて。スクロールしたときの動き：霧が晴れる */}
+      {/* 5. お店でできること */}
       <section
-        id="about"
-        aria-labelledby="about-heading"
-        className="scroll-mt-10 bg-parchment"
+        aria-labelledby="offer-heading"
+        className="mx-auto max-w-6xl px-5 pb-20 md:pb-32"
       >
-        <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 md:grid-cols-[2fr_3fr] md:items-center md:gap-16 md:py-32">
-          <div>
-            <SectionHeading
-              id="about-heading"
-              label={about.label}
-              heading={about.heading}
-            />
-            <div className="mt-8 flex flex-col gap-4 text-lg leading-loose">
-              {about.body.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
+        <SectionHeading id="offer-heading" label={offer.label} heading={offer.heading} />
+        <ul className="mt-14 grid gap-12 md:mt-20 md:grid-cols-3 md:gap-10">
+          {offer.items.map((item) => {
+            const Icon = offerIcons[item.icon];
+            return (
+              <li key={item.icon}>
+                <span className="flex size-14 items-center justify-center rounded-full border border-gold/50">
+                  <Icon
+                    aria-hidden="true"
+                    strokeWidth={iconStroke}
+                    className="size-6 text-gold"
+                  />
+                </span>
+                <h3 className="mt-5 text-xl leading-snug">{item.title}</h3>
+                <p className="mt-2 max-w-xs leading-relaxed text-forest-soft">
+                  <Phrases>{item.body}</Phrases>
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      {/* 6. イベント：タディンジュット祭り。11 月 1 日（日本時間）が終わったら出さない */}
+      {showEvent && (
+        <section
+          id="event"
+          aria-labelledby="event-heading"
+          className="mx-auto max-w-6xl scroll-mt-10 px-5 pb-20 md:pb-32"
+        >
+          <div className="grid items-center gap-10 overflow-hidden rounded-2xl bg-forest px-6 py-14 text-ivory md:grid-cols-[1.15fr_1fr] md:px-14 md:py-20">
+            <div>
+              <SectionHeading
+                id="event-heading"
+                label={event.label}
+                heading={event.heading}
+                tone="dark"
+              />
+              <p className="mt-3 font-heading text-lg tracking-wide text-ivory/80">
+                {event.subheading}
+              </p>
+              <p className="mt-8 text-lg leading-loose">
+                <Phrases>{event.offer}</Phrases>
+              </p>
+              <p className="mt-4 leading-loose text-ivory/80">
+                <Phrases>{event.body}</Phrases>
+              </p>
+              <dl className="mt-8 grid gap-3 text-sm sm:grid-cols-[auto_1fr] sm:gap-x-6">
+                <dt className="text-gold">{event.periodLabel}</dt>
+                <dd className="text-ivory/90">
+                  <Phrases>{event.period}</Phrases>
+                </dd>
+                <dt className="mt-2 text-gold sm:mt-0">{event.conditionsLabel}</dt>
+                <dd className="text-ivory/90">
+                  <Phrases>{event.conditions}</Phrases>
+                </dd>
+              </dl>
+            </div>
+            {/* 灯りのような、動かない金の光 */}
+            <div className="relative">
+              <span
+                aria-hidden="true"
+                className="absolute -inset-[12%] bg-[radial-gradient(closest-side,rgb(217_169_46/0.3),rgb(217_169_46/0.08)_60%,rgb(217_169_46/0))]"
+              />
+              <Plate
+                src={photos.laphet}
+                alt={event.alt}
+                sizes="(min-width: 768px) 384px, 76vw"
+                className="mx-auto w-[76%] max-w-sm"
+              />
             </div>
           </div>
-          <figure>
-            <MistReveal className="rounded-lg">
-              <Image
-                src={photos["hometown-gate"]}
-                alt={about.photoAlt}
-                sizes="(min-width: 1152px) 660px, (min-width: 768px) 58vw, 100vw"
-                className="h-auto w-full"
-              />
-            </MistReveal>
-            <figcaption className="mt-3 text-sm text-forest-soft">
-              {about.photoCaption}
-            </figcaption>
-          </figure>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* ご予約 */}
+      {/* 7. ご予約 */}
       <section
-        aria-labelledby="reserve-heading"
-        className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:grid-cols-[1fr_auto] md:items-end md:py-32"
+        id="reservation"
+        aria-labelledby="reservation-heading"
+        className="scroll-mt-10 bg-parchment"
       >
-        <div>
-          <SectionHeading
-            id="reserve-heading"
-            label={reserve.label}
-            heading={reserve.heading}
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 md:grid-cols-[2fr_3fr] md:gap-16 md:py-32">
+          <div>
+            <SectionHeading
+              id="reservation-heading"
+              label={reserve.label}
+              heading={reserve.heading}
+            />
+            <p className="mt-6 max-w-md leading-loose">
+              <Phrases>{reserve.body}</Phrases>
+            </p>
+          </div>
+          <ReservationForm
+            locale={locale}
+            form={reserve.form}
+            slots={reservationSlots}
+            maxPartySize={MAX_PARTY_SIZE}
+            successBody={<Phrases>{reserve.form.success.body}</Phrases>}
           />
-          <p className="mt-6 max-w-lg leading-loose">{reserve.body}</p>
         </div>
-        <Link href={reserveHref} className={cn(reserveClass, "justify-self-start")}>
-          {actions.reserve}
-        </Link>
       </section>
     </main>
   );

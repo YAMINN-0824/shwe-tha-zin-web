@@ -1,11 +1,18 @@
 import type { Dictionary } from "@/i18n/dictionaries/ja";
 import { OrchidMark } from "./orchid-mark";
+import { Phrases } from "./phrases";
 
-export function SiteFooter({ footer }: { footer: Dictionary["footer"] }) {
+export function SiteFooter({
+  footer,
+  shop,
+}: {
+  footer: Dictionary["footer"];
+  shop: Dictionary["shop"];
+}) {
   const items = [
-    { label: footer.addressLabel, lines: [footer.address] },
-    { label: footer.hoursLabel, lines: footer.hours },
-    { label: footer.phoneLabel, lines: [footer.phone] },
+    { label: footer.addressLabel, lines: shop.address },
+    { label: footer.hoursLabel, lines: shop.hours },
+    { label: footer.phoneLabel, lines: [shop.phone] },
   ];
 
   return (
@@ -17,13 +24,13 @@ export function SiteFooter({ footer }: { footer: Dictionary["footer"] }) {
             SHWE THA ZIN
           </span>
         </div>
-        <dl className="grid gap-8 sm:grid-cols-3">
+        <dl className="grid gap-8 sm:grid-cols-[1.5fr_1fr_1fr]">
           {items.map((item) => (
             <div key={item.label} className="flex flex-col gap-2">
               <dt className="text-sm text-gold">{item.label}</dt>
               {item.lines.map((line) => (
                 <dd key={line} className="text-sm leading-relaxed text-ivory/90">
-                  {line}
+                  <Phrases>{line}</Phrases>
                 </dd>
               ))}
             </div>
