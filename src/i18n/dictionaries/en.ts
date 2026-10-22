@@ -17,35 +17,61 @@ const en: Dictionary = {
     language: "Language",
   },
   hero: {
-    shwe: {
-      term: "Shwe",
-      meaning: "Gold.",
+    meaning:
+      "Shwe means gold. Thazin is a rare orchid from Myanmar that blooms only once a year.",
+    // The word in mark gets the gold hand-drawn circle. close never breaks across lines
+    lead: {
+      before: "Home cooking from our ",
+      mark: "mother's",
+      after: " kitchen. ",
+      close: "Take your time.",
     },
-    thazin: {
-      term: "Thazin",
-      meaning:
-        "A rare orchid loved in Myanmar. It blooms only once a year, and it is hard to grow.",
+    signature: {
+      label: "Most popular",
+      name: "Tea leaf salad",
+      // TODO: placeholder description. Replace with the shop's own words
+      description: "Fermented tea leaves, mixed with crunchy beans and nuts.",
+      alt: "A red lacquer tray with tea leaves, beans, nuts, tomato, chili and garlic in separate sections",
     },
+  },
+  // TODO: placeholder dish names and descriptions. Replace with the shop's own words
+  featured: {
+    label: "From our kitchen",
+    heading: "Everyday dishes, made for sharing",
+    items: [
+      {
+        image: "rice-set",
+        name: "Burmese rice set",
+        description: "Rice with a spread of small side dishes, a little of everything.",
+        alt: "A woven tray with rice and many small bowls of curry, soup and vegetable dishes",
+      },
+      {
+        image: "fritters",
+        name: "Burmese fritters platter",
+        description: "Crisp vegetable and bean fritters with a tangy dipping sauce.",
+        alt: "A woven tray of bean and vegetable fritters with lettuce, cabbage and a green sauce",
+      },
+    ],
   },
   // TODO: placeholder text. Replace with the shop's real story
   about: {
-    heading: "About us",
+    label: "About us",
+    heading: "From our mother's hometown",
     body: [
       "We serve the dishes a mother has always cooked for her family, just as they are.",
       "There is no need to hurry. Enjoy a warm meal and a quiet moment.",
     ],
+    photoAlt: "A large red and gold gate over a straight road lined with trees",
+    photoCaption: "The gate at the entrance to our mother's hometown",
   },
-  links: {
-    menu: {
-      heading: "Menu",
-      body: "See our dishes and prices.",
-      action: "See the menu",
-    },
-    reserve: {
-      heading: "Reservations",
-      body: "Choose a date and the number of guests, then send a request. We will contact you to confirm.",
-      action: "Reserve a table",
-    },
+  reserve: {
+    label: "Reservations",
+    heading: "We will have a table ready for you",
+    body: "Choose a date and the number of guests, then send a request. We will contact you to confirm.",
+  },
+  actions: {
+    menu: "See the menu",
+    reserve: "Reserve a table",
   },
   // TODO: placeholder details. Replace with the shop's real details
   footer: {

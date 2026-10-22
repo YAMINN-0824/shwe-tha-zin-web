@@ -47,22 +47,25 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* タザンのランの色（くわしくは DESIGN.md） */
+/* タザンのランと、ラペットゥのうるしのお盆の色（くわしくは DESIGN.md） */
 @theme {
   --color-ivory: #f7f3e8; /* 花びら：背景 */
+  --color-parchment: #efe8d6; /* カード、セクションの背景 */
   --color-forest: #1f2a1e; /* 森の緑：文字、フッター */
+  --color-forest-soft: #5c6650; /* サブの文字 */
   --color-leaf: #6b7a45; /* 葉の緑：線、アイコン、大きい文字 */
   --color-leaf-deep: #4f5b30; /* 葉の緑の小さい文字 */
-  --color-gold: #d9a92e; /* Shwe：アクセント。少しだけ */
-  --color-gold-deep: #8a6a16; /* アイボリーの上の金の文字 */
-  --color-orange: #c8743a; /* 花の中心：小さい点や印だけ */
-  --color-orange-deep: #9e5424; /* オレンジの文字 */
+  --color-gold: #d9a92e; /* Shwe：細い線と小さいアクセントだけ */
+  --color-gold-deep: #7a5c12; /* 金の小さい文字（アイボリーとパーチメントの上） */
+  --color-lacquer: #9b3a26; /* うるしの赤：とても小さいアクセントだけ */
 
   /* 花が開くような、ゆっくりしたフェードイン */
   --ease-bloom: cubic-bezier(0.22, 1, 0.36, 1);
   --animate-bloom: bloom 1.2s var(--ease-bloom) both;
-  /* 茎の線が上から下へのびる */
-  --animate-stem-grow: stem-grow 1.6s var(--ease-bloom) both;
+  /* 金の手がきの丸が、線をえがくように出てくる */
+  --animate-draw: draw 1.4s var(--ease-bloom) both;
+  /* 金の花粉が、ゆっくりただよう */
+  --animate-pollen: pollen 26s ease-in-out infinite;
 
   @keyframes bloom {
     from {
@@ -75,12 +78,28 @@
     }
   }
 
-  @keyframes stem-grow {
+  /* pathLength="1" の線に使う */
+  @keyframes draw {
     from {
-      transform: scaleY(0);
+      stroke-dashoffset: 1;
     }
     to {
-      transform: scaleY(1);
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes pollen {
+    0%,
+    100% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+    20%,
+    80% {
+      opacity: 0.7;
+    }
+    50% {
+      transform: translate(1.5rem, -3rem);
     }
   }
 }
@@ -88,7 +107,7 @@
 :root {
   --background: var(--color-ivory);
   --foreground: var(--color-forest);
-  --card: #fbf9f2;
+  --card: var(--color-parchment);
   --card-foreground: var(--color-forest);
   --popover: #fbf9f2;
   --popover-foreground: var(--color-forest);
@@ -96,17 +115,17 @@
   --primary-foreground: var(--color-ivory);
   --secondary: #e7e6d3;
   --secondary-foreground: var(--color-forest);
-  --muted: #efe9da;
-  --muted-foreground: #5b6450;
+  --muted: var(--color-parchment);
+  --muted-foreground: var(--color-forest-soft);
   --accent: #f1e5c3;
   --accent-foreground: var(--color-forest);
-  --destructive: #a93a2c;
+  --destructive: var(--color-lacquer);
   --border: #ddd5c0;
   --input: #d3cab2;
   --ring: var(--color-gold);
   --chart-1: var(--color-leaf);
   --chart-2: var(--color-gold);
-  --chart-3: var(--color-orange);
+  --chart-3: var(--color-lacquer);
   --chart-4: var(--color-leaf-deep);
   --chart-5: var(--color-gold-deep);
   --radius: 0.75rem;
@@ -142,7 +161,7 @@
   --ring: var(--color-gold);
   --chart-1: #9aa872;
   --chart-2: var(--color-gold);
-  --chart-3: var(--color-orange);
+  --chart-3: #d98a73;
   --chart-4: #c9d1a8;
   --chart-5: #e8c873;
   --sidebar: #1a2419;
@@ -171,6 +190,8 @@
     @apply font-heading font-medium tracking-wide;
     /* かなの字間をつめて、明朝の見出しをきれいに見せる */
     font-feature-settings: "palt";
+    /* 日本語の見出しを、ことばのとちゅうで改行しない（対応しているブラウザだけ） */
+    word-break: auto-phrase;
   }
 }
 
