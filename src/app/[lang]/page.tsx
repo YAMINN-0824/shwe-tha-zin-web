@@ -76,8 +76,8 @@ export default async function HomePage() {
           {/* 広い画面（xl）では、ミャーを少しまん中へ。右に、ふきだしのぶんだけあける（11.5rem） */}
           <figure className="relative mt-14 flex flex-col items-end lg:mt-0 xl:mr-[11.5rem]">
             {/* ふきだし：スマホ〜タブレットはミャーの頭の上、広い画面（xl）は頭の右（コック帽の横の、空いたところ）
-                ミャーのあとに、しずかに出る */}
-            <figcaption className="relative z-10 mr-[15%] mb-4 animate-bloom [animation-delay:1400ms] sm:mr-24 lg:mr-28 xl:absolute xl:top-[5%] xl:left-[calc(100%-3.2rem)] xl:mr-0 xl:mb-0">
+                右はしは、ヘッダーの「予約する」の右はしとそろえる。ミャーのあとに、しずかに出る */}
+            <figcaption className="relative z-10 mr-[15%] mb-4 animate-bloom [animation-delay:1400ms] sm:mr-24 lg:mr-28 xl:absolute xl:top-[5%] xl:-right-[11.5rem] xl:mr-0 xl:mb-0">
               <p className="relative rounded-xl border border-gold-deep/35 bg-ivory-soft px-4 py-2.5 font-heading text-sm leading-relaxed tracking-wide whitespace-nowrap text-forest-soft">
                 {hero.mascot.greeting.map((line) => (
                   <span key={line} className="block">
