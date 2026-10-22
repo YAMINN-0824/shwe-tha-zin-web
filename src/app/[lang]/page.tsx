@@ -169,22 +169,30 @@ export default async function HomePage() {
                   />
                   <div className="min-w-0">
                     <h3 className="text-lg leading-snug">{item.title}</h3>
-                    <p className="text-sm leading-normal text-gold-deep lg:whitespace-nowrap">
+                    {/* 光が強くなると、文字も少し濃くして読みやすさを保つ */}
+                    <p className="text-sm leading-normal text-gold-deep transition-colors duration-400 ease-in-out group-hover:text-gold-ink group-has-focus-visible:text-gold-ink motion-reduce:transition-none lg:whitespace-nowrap">
                       {item.detail}
                     </p>
                   </div>
                 </>
               );
               const itemClass =
-                "flex items-center gap-3.5 rounded-[4px] px-3 py-2 lg:justify-center";
+                "relative flex items-center gap-3.5 rounded-[4px] px-3 py-2 lg:justify-center";
               return (
-                <li key={item.title}>
+                <li key={item.title} className="group relative">
+                  {/* マウスをのせると、この項目のうしろの金の光が、ゆっくり強くなる
+                      （hover はマウスのある画面だけ。キーボードのフォーカスでも同じ） */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -inset-x-4 -inset-y-6 bg-[radial-gradient(ellipse_closest-side,rgb(217_169_46/0.25),rgb(217_169_46/0.1)_55%,rgb(217_169_46/0))] opacity-0 transition-opacity duration-400 ease-in-out group-hover:opacity-100 group-has-focus-visible:opacity-100 motion-reduce:transition-none"
+                  />
                   {item.href ? (
                     <Link
                       href={item.href}
                       className={cn(
                         itemClass,
-                        "transition-colors duration-300 hover:bg-gold/10 focus-visible:outline-2 focus-visible:outline-ring",
+                        // フォーカスの線はキーボードのときだけ。細く、目立ちすぎない
+                        "focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-gold-deep focus-visible:outline-solid",
                       )}
                     >
                       {content}
