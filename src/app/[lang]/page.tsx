@@ -51,8 +51,9 @@ export default async function HomePage() {
       {/* 1. ヒーロー。ページを開いたときの動き：ことば → ミャー → ふきだし → 金の丸 */}
       <section className="relative overflow-x-clip">
         <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-10 pb-20 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:pt-16 lg:pb-28">
-          {/* 左：いちばん大きいひとことと、名前の意味。1 つのまとまりで、ミャーと上下まん中にそろえる */}
-          <div className="max-w-xl animate-bloom lg:max-w-[36.5rem]">
+          {/* 左：いちばん大きいひとことと、名前の意味。1 つのまとまりで、ミャーと上下まん中にそろえる
+              意味の文章だけ少し下げる（lg:mt-14）。ひとことは動かさないよう、まとまりを 1rem 下げる */}
+          <div className="max-w-xl animate-bloom lg:max-w-[36.5rem] lg:translate-y-4">
             {/* text-balance：1 語だけの行ができないよう、行の長さをそろえる */}
             <h1 className="text-[clamp(1.75rem,8vw,2.75rem)] leading-[1.6] tracking-wide text-balance">
               {hero.lead.before}
@@ -66,7 +67,7 @@ export default async function HomePage() {
               {hero.lead.gap}
               <span className="inline-block">{hero.lead.close}</span>
             </h1>
-            <p className="mt-6 max-w-md leading-loose text-forest-soft">
+            <p className="mt-8 max-w-md leading-loose text-forest-soft lg:mt-14">
               <Phrases>{hero.meaning}</Phrases>
             </p>
           </div>
