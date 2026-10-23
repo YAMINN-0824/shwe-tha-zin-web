@@ -28,7 +28,7 @@ export default async function HomePage() {
   // お店の情報の帯。くわしい文字は 1 行だけ。ご予約は、全体がフォームへのリンク
   // お店の場所は Google マップ（新しいタブ）、ご予約はフォームへのリンク
   const infoItems = [
-    { icon: MapPin, title: info.location, detail: shop.addressShort, href: shop.mapUrl, external: true },
+    { icon: MapPin, title: info.location, detail: shop.mapLink, href: shop.mapUrl, external: true },
     { icon: Clock, title: info.hours, detail: shop.hours, href: null, external: false },
     { icon: CalendarCheck, title: info.reservation, detail: shop.phone, href: reserveHref, external: false },
   ];
@@ -155,19 +155,18 @@ export default async function HomePage() {
                     className="size-8 shrink-0 text-forest"
                   />
                   <div className="min-w-0">
-                    <div className="flex flex-wrap items-baseline gap-x-2.5">
-                      <h3 className="text-h3">{item.title}</h3>
-                      {/* 地図へのリンクだと分かるように、小さく書いておく */}
-                      {item.external && (
-                        <span className="text-small text-gold-deep underline decoration-gold/60 underline-offset-[0.3em] group-hover:text-gold-ink group-hover:decoration-gold-ink">
-                          {info.mapHint}
-                          <span className="sr-only">{info.newTab}</span>
-                        </span>
-                      )}
-                    </div>
+                    <h3 className="text-h3">{item.title}</h3>
                     {/* 光が強くなると、文字も少し濃くして読みやすさを保つ */}
-                    <p className="text-small text-gold-deep transition-colors duration-400 ease-in-out group-hover:text-gold-ink group-has-focus-visible:text-gold-ink motion-reduce:transition-none lg:whitespace-nowrap">
+                    {/* 地図のリンクは、マウスをのせると、うすい下線が出る */}
+                    <p
+                      className={cn(
+                        "text-small text-gold-deep transition-colors duration-400 ease-in-out group-hover:text-gold-ink group-has-focus-visible:text-gold-ink motion-reduce:transition-none lg:whitespace-nowrap",
+                        item.external &&
+                          "decoration-gold-deep/40 underline-offset-[0.3em] group-hover:underline group-focus-visible:underline",
+                      )}
+                    >
                       {item.detail}
+                      {item.external && <span className="sr-only">{info.newTab}</span>}
                     </p>
                   </div>
                 </>
