@@ -82,23 +82,22 @@ const ja = {
   offer: {
     label: "お店でできること",
     heading: "食事のほかにも",
+    // TODO: 仮の文章。お店の言葉に入れかえる
+    body: "お祭りの日の食事会や、お祝いの日の料理のご相談、デリバリーも。（仮）",
     items: [
       {
         icon: "events" as OfferIcon,
         title: "イベント",
-        body: "ミャンマーのお祭りの日に、特別な食事の会をひらきます。",
       },
       {
         icon: "special" as OfferIcon,
         title: "特別メニュー",
-        body: "お祝いの日や季節に合わせた料理を、ご相談ください。",
       },
       // TODO: confirm if delivery is really offered before going live
       // （今は表示だけ。注文の仕組みはない）
       {
         icon: "delivery" as OfferIcon,
         title: "デリバリー",
-        body: "お店の味を、ご自宅でも。",
       },
     ],
   },

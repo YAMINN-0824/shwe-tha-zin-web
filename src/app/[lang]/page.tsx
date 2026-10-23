@@ -244,20 +244,19 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      {/* 5. お店でできること */}
+      {/* 5. お店でできること。PC は 2 列：左に見出しと説明、右に 3 つの項目 */}
       <section
         aria-labelledby="offer-heading"
-        className="mx-auto max-w-6xl px-5 pb-20 md:pb-32"
+        className="mx-auto grid max-w-6xl gap-12 px-5 pb-20 md:pb-32 lg:grid-cols-[1fr_1.5fr] lg:items-center lg:gap-16"
       >
-        <SectionHeading id="offer-heading" label={offer.label} heading={offer.heading} />
-        {/* 押すと金の光がともる、トグルのボタン（クライアント） */}
-        <OfferList
-          items={offer.items.map((item) => ({
-            icon: item.icon,
-            title: item.title,
-            body: <Phrases>{item.body}</Phrases>,
-          }))}
-        />
+        <div>
+          <SectionHeading id="offer-heading" label={offer.label} heading={offer.heading} />
+          <p className="mt-6 max-w-sm leading-loose text-forest-soft">
+            <Phrases>{offer.body}</Phrases>
+          </p>
+        </div>
+        {/* 押すと、見出しのうしろに金の光がともる、トグルのボタン（クライアント） */}
+        <OfferList items={offer.items} />
       </section>
 
       {/* 6. イベント：タディンジュット祭り。11 月 1 日（日本時間）が終わったら出さない */}

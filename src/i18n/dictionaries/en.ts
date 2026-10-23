@@ -85,23 +85,22 @@ const en: Dictionary = {
   offer: {
     label: "What we offer",
     heading: "More than a meal",
+    // TODO: placeholder text. Replace with the shop's own words
+    body: "Festival dinners, dishes for your special days, and delivery too. (placeholder)",
     items: [
       {
         icon: "events",
         title: "Events",
-        body: "Special dinners on the days of Myanmar's festivals.",
       },
       {
         icon: "special",
         title: "Special menus",
-        body: "Ask us about dishes for celebrations and the seasons.",
       },
       // TODO: confirm if delivery is really offered before going live
       // (UI only for now. There is no ordering yet)
       {
         icon: "delivery",
         title: "Delivery",
-        body: "Our home cooking, at your home too.",
       },
     ],
   },
