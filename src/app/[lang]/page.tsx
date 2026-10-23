@@ -1,22 +1,14 @@
-import {
-  Bike,
-  CalendarCheck,
-  CalendarHeart,
-  ChefHat,
-  Clock,
-  MapPin,
-  type LucideIcon,
-} from "lucide-react";
+import { CalendarCheck, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { HandDrawnCircle } from "@/components/site/hand-drawn-circle";
 import { MistReveal } from "@/components/site/mist-reveal";
+import { OfferList } from "@/components/site/offer-list";
 import { Phrases } from "@/components/site/phrases";
 import { photos } from "@/components/site/photos";
 import { Plate } from "@/components/site/plate";
 import { ReservationForm } from "@/components/site/reservation-form";
 import { SectionHeading } from "@/components/site/section-heading";
-import type { OfferIcon } from "@/i18n/dictionaries/ja";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { MAX_PARTY_SIZE, isThadingyutEventOpen, reservationSlots } from "@/lib/shop";
 import { cn } from "@/lib/utils";
@@ -25,12 +17,6 @@ const menuLinkClass =
   "inline-block rounded-sm text-lg text-leaf-deep underline decoration-leaf/50 underline-offset-[0.4em] transition-colors duration-300 hover:text-forest hover:decoration-forest focus-visible:outline-2 focus-visible:outline-ring";
 // 細い線のアイコン（DESIGN.md「アイコン」）
 const iconStroke = 1.25;
-
-const offerIcons: Record<OfferIcon, LucideIcon> = {
-  events: CalendarHeart,
-  special: ChefHat,
-  delivery: Bike,
-};
 
 export default async function HomePage() {
   const locale = await getLocale();
@@ -264,26 +250,14 @@ export default async function HomePage() {
         className="mx-auto max-w-6xl px-5 pb-20 md:pb-32"
       >
         <SectionHeading id="offer-heading" label={offer.label} heading={offer.heading} />
-        <ul className="mt-14 grid gap-12 md:mt-20 md:grid-cols-3 md:gap-10">
-          {offer.items.map((item) => {
-            const Icon = offerIcons[item.icon];
-            return (
-              <li key={item.icon}>
-                <span className="flex size-14 items-center justify-center rounded-full border border-gold/50">
-                  <Icon
-                    aria-hidden="true"
-                    strokeWidth={iconStroke}
-                    className="size-6 text-gold"
-                  />
-                </span>
-                <h3 className="mt-5 text-xl leading-snug">{item.title}</h3>
-                <p className="mt-2 max-w-xs leading-relaxed text-forest-soft">
-                  <Phrases>{item.body}</Phrases>
-                </p>
-              </li>
-            );
-          })}
-        </ul>
+        {/* 押すと金の光がともる、トグルのボタン（クライアント） */}
+        <OfferList
+          items={offer.items.map((item) => ({
+            icon: item.icon,
+            title: item.title,
+            body: <Phrases>{item.body}</Phrases>,
+          }))}
+        />
       </section>
 
       {/* 6. イベント：タディンジュット祭り。11 月 1 日（日本時間）が終わったら出さない */}
