@@ -24,7 +24,8 @@ export function SiteFooter({
             SHWE THA ZIN
           </span>
         </div>
-        <dl className="grid gap-8 sm:grid-cols-[1.5fr_1fr_1fr]">
+        {/* 住所・営業時間・電話は、同じはばで、あいだも同じ */}
+        <dl className="grid gap-8 sm:grid-cols-3 sm:gap-10">
           {items.map((item) => (
             <div key={item.label} className="flex flex-col gap-2">
               <dt className="text-small text-gold">{item.label}</dt>
