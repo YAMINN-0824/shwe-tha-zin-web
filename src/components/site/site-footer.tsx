@@ -27,8 +27,8 @@ export function SiteFooter({
         {/* 住所・営業時間・電話は、同じはばで、あいだも同じ */}
         <dl className="grid gap-8 sm:grid-cols-3 sm:gap-10">
           {items.map((item) => (
-            <div key={item.label} className="flex flex-col gap-2">
-              <dt className="text-small text-gold">{item.label}</dt>
+            <div key={item.label} className="flex flex-col">
+              <dt className="mb-2 text-small text-gold">{item.label}</dt>
               {item.lines.map((line) => (
                 <dd key={line} className="text-small text-ivory/90">
                   {/* 電話番号は、本当の番号（phoneHref）が入ったらリンクにする */}

@@ -47,8 +47,8 @@ const ja = {
   // お店の情報（フッターと、お店の情報の帯で使う。en.ts も同じ形）
   shop: {
     // フッターに出す住所。お店の情報の帯には出さない（かわりに Google マップのリンク）
-    // TODO: 仮の住所。本当の住所に入れかえる
-    address: ["〒530-0000", "大阪府大阪市〇〇区〇〇 0-0-0（仮）"],
+    // ミャンマーの住所なので、日本語のページでも英語のまま出す（1 つが 1 行）
+    address: ["No. 2, Pinlon Lanmadaw Road,", "Ward 2, Kalay,", "Sagaing Region, Myanmar"],
     mapUrl: "https://maps.app.goo.gl/nvb5322Lr6qkBrjL6",
     mapLink: "Googleマップで見る",
     // 定休日はない。時間を変えたら src/lib/shop.ts の予約の時間も合わせる
