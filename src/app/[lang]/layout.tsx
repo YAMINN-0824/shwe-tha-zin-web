@@ -34,7 +34,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/[lang]">) {
       <body className="flex min-h-full flex-col">
         <SiteHeader locale={locale} nav={dict.nav} />
         <div className="flex flex-1 flex-col">{children}</div>
-        <SiteFooter footer={dict.footer} shop={dict.shop} newTab={dict.info.newTab} />
+        <SiteFooter footer={dict.footer} shop={dict.shop} />
       </body>
     </html>
   );

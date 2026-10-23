@@ -46,8 +46,9 @@ const ja = {
   // TODO: 仮の情報。お店の本当の情報に入れかえる（フッターと、お店の情報の帯で使う）
   // お店の情報（フッターと、お店の情報の帯で使う。en.ts も同じ形）
   shop: {
-    // TODO: 本当の住所が決まったら、ここに足して、帯とフッターに出す
-    // 今は住所のかわりに、Google マップへのリンクだけ出す
+    // フッターに出す住所。お店の情報の帯には出さない（かわりに Google マップのリンク）
+    // TODO: 仮の住所。本当の住所に入れかえる
+    address: ["〒530-0000", "大阪府大阪市〇〇区〇〇 0-0-0（仮）"],
     mapUrl: "https://maps.app.goo.gl/nvb5322Lr6qkBrjL6",
     mapLink: "Googleマップで見る",
     // 定休日はない。時間を変えたら src/lib/shop.ts の予約の時間も合わせる
@@ -161,7 +162,7 @@ const ja = {
     },
   },
   footer: {
-    addressLabel: "お店の場所",
+    addressLabel: "住所",
     hoursLabel: "営業時間",
     phoneLabel: "電話",
   },

@@ -5,16 +5,12 @@ import { Phrases } from "./phrases";
 export function SiteFooter({
   footer,
   shop,
-  newTab,
 }: {
   footer: Dictionary["footer"];
   shop: Dictionary["shop"];
-  // 「（新しいタブで開きます）」（読み上げだけ）
-  newTab: string;
 }) {
-  // お店の情報の帯と同じ内容（辞書の shop）
   const items = [
-    { label: footer.addressLabel, lines: [shop.mapLink] },
+    { label: footer.addressLabel, lines: shop.address },
     { label: footer.hoursLabel, lines: [shop.hours] },
     { label: footer.phoneLabel, lines: [shop.phone] },
   ];
@@ -34,18 +30,8 @@ export function SiteFooter({
               <dt className="text-small text-gold">{item.label}</dt>
               {item.lines.map((line) => (
                 <dd key={line} className="text-small text-ivory/90">
-                  {/* 地図は Google マップへ（新しいタブ）。電話番号は、本当の番号（phoneHref）が入ったらリンクにする */}
-                  {line === shop.mapLink ? (
-                    <a
-                      href={shop.mapUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-sm decoration-ivory/40 underline-offset-[0.3em] hover:underline focus-visible:underline focus-visible:outline-2 focus-visible:outline-gold"
-                    >
-                      {line}
-                      <span className="sr-only">{newTab}</span>
-                    </a>
-                  ) : line === shop.phone && shop.phoneHref ? (
+                  {/* 電話番号は、本当の番号（phoneHref）が入ったらリンクにする */}
+                  {line === shop.phone && shop.phoneHref ? (
                     <a
                       href={shop.phoneHref}
                       className="rounded-sm underline decoration-ivory/40 underline-offset-[0.3em] hover:decoration-ivory focus-visible:outline-2 focus-visible:outline-gold"

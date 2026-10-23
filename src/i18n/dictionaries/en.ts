@@ -48,7 +48,9 @@ const en: Dictionary = {
   },
   // TODO: placeholder details. Replace with the shop's real details
   shop: {
-    // TODO: add the real address here when it is ready (for now, only the map link)
+    // Address for the footer. The info bar shows the Google Maps link instead
+    // TODO: placeholder address. Replace with the real address
+    address: ["0-0-0 Placeholder, Osaka", "530-0000 (placeholder)"],
     mapUrl: "https://maps.app.goo.gl/nvb5322Lr6qkBrjL6",
     mapLink: "View on Google Maps",
     // No closed day
@@ -161,7 +163,7 @@ const en: Dictionary = {
     },
   },
   footer: {
-    addressLabel: "Location",
+    addressLabel: "Address",
     hoursLabel: "Hours",
     phoneLabel: "Phone",
   },
