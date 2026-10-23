@@ -6,10 +6,14 @@ import { cacheLife } from "next/cache";
 export const SHOP_TIME_ZONE = "Asia/Tokyo";
 export const SHOP_UTC_OFFSET = "+09:00";
 
-// 予約できる時間（30 分ごと）
-// TODO: 仮の営業時間（11:00〜21:00）に合わせている。本当の営業時間に合わせる
-export const RESERVATION_FIRST_SLOT = "11:00";
-export const RESERVATION_LAST_SLOT = "20:00";
+// 営業時間：毎日 5:00〜19:00（定休日なし）。辞書の shop.hours と合わせる
+export const SHOP_OPENS_AT = "05:00";
+export const SHOP_CLOSES_AT = "19:00";
+
+// 予約できる時間（30 分ごと）。さいごは、しまる 1 時間前（お食事の時間をとるため）
+// テイクアウトの受け取り時間を作るときも、この営業時間に合わせる
+export const RESERVATION_FIRST_SLOT = SHOP_OPENS_AT;
+export const RESERVATION_LAST_SLOT = "18:00";
 export const RESERVATION_STEP_MINUTES = 30;
 // DB の reservations.party_size と同じ
 export const MAX_PARTY_SIZE = 20;

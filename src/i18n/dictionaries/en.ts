@@ -48,16 +48,23 @@ const en: Dictionary = {
   },
   // TODO: placeholder details. Replace with the shop's real details
   shop: {
+    // TODO: placeholder address. Replace with the real address
     address: ["0-0-0 Placeholder, Osaka", "530-0000 (placeholder)"],
     // One short line for the info bar
     addressShort: "Osaka 0-0-0 (placeholder)",
-    hours: "11:00–21:00 (placeholder)",
-    closed: "Closed: one day a week (placeholder)",
+    mapUrl: "https://maps.app.goo.gl/nvb5322Lr6qkBrjL6",
+    // No closed day
+    hours: "Every day, 5:00 AM – 7:00 PM",
+    // TODO: placeholder number. Replace with the real number
     phone: "00-0000-0000 (placeholder)",
+    // TODO: when the number is real, set "tel:+81..." (the number becomes a link)
+    phoneHref: "",
   },
   info: {
     heading: "Shop information",
     location: "Locate us",
+    mapHint: "Google Maps",
+    newTab: "(opens in a new tab)",
     hours: "Open hours",
     reservation: "Reservation",
   },

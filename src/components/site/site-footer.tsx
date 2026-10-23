@@ -11,7 +11,7 @@ export function SiteFooter({
 }) {
   const items = [
     { label: footer.addressLabel, lines: shop.address },
-    { label: footer.hoursLabel, lines: [shop.hours, shop.closed] },
+    { label: footer.hoursLabel, lines: [shop.hours] },
     { label: footer.phoneLabel, lines: [shop.phone] },
   ];
 
@@ -30,7 +30,17 @@ export function SiteFooter({
               <dt className="text-small text-gold">{item.label}</dt>
               {item.lines.map((line) => (
                 <dd key={line} className="text-small text-ivory/90">
-                  <Phrases>{line}</Phrases>
+                  {/* 電話番号は、本当の番号（phoneHref）が入ったらリンクにする */}
+                  {line === shop.phone && shop.phoneHref ? (
+                    <a
+                      href={shop.phoneHref}
+                      className="rounded-sm underline decoration-ivory/40 underline-offset-[0.3em] hover:decoration-ivory focus-visible:outline-2 focus-visible:outline-gold"
+                    >
+                      {line}
+                    </a>
+                  ) : (
+                    <Phrases>{line}</Phrases>
+                  )}
                 </dd>
               ))}
             </div>

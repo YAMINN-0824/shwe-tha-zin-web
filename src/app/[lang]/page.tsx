@@ -26,10 +26,11 @@ export default async function HomePage() {
   const reserveHref = `/${locale}#reservation`;
 
   // お店の情報の帯。くわしい文字は 1 行だけ。ご予約は、全体がフォームへのリンク
+  // お店の場所は Google マップ（新しいタブ）、ご予約はフォームへのリンク
   const infoItems = [
-    { icon: MapPin, title: info.location, detail: shop.addressShort, href: null },
-    { icon: Clock, title: info.hours, detail: shop.hours, href: null },
-    { icon: CalendarCheck, title: info.reservation, detail: shop.phone, href: reserveHref },
+    { icon: MapPin, title: info.location, detail: shop.addressShort, href: shop.mapUrl, external: true },
+    { icon: Clock, title: info.hours, detail: shop.hours, href: null, external: false },
+    { icon: CalendarCheck, title: info.reservation, detail: shop.phone, href: reserveHref, external: false },
   ];
 
   return (
@@ -154,7 +155,16 @@ export default async function HomePage() {
                     className="size-8 shrink-0 text-forest"
                   />
                   <div className="min-w-0">
-                    <h3 className="text-h3">{item.title}</h3>
+                    <div className="flex flex-wrap items-baseline gap-x-2.5">
+                      <h3 className="text-h3">{item.title}</h3>
+                      {/* 地図へのリンクだと分かるように、小さく書いておく */}
+                      {item.external && (
+                        <span className="text-small text-gold-deep underline decoration-gold/60 underline-offset-[0.3em] group-hover:text-gold-ink group-hover:decoration-gold-ink">
+                          {info.mapHint}
+                          <span className="sr-only">{info.newTab}</span>
+                        </span>
+                      )}
+                    </div>
                     {/* 光が強くなると、文字も少し濃くして読みやすさを保つ */}
                     <p className="text-small text-gold-deep transition-colors duration-400 ease-in-out group-hover:text-gold-ink group-has-focus-visible:text-gold-ink motion-reduce:transition-none lg:whitespace-nowrap">
                       {item.detail}
@@ -164,6 +174,9 @@ export default async function HomePage() {
               );
               const itemClass =
                 "relative flex items-center gap-3.5 rounded-[4px] px-3 py-2 lg:justify-center";
+              // フォーカスの線はキーボードのときだけ。細く、目立ちすぎない
+              const focusRing =
+                "focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-gold-deep focus-visible:outline-solid";
               return (
                 <li key={item.title} className="group relative">
                   {/* マウスをのせると、この項目のうしろの金の光が、ゆっくり強くなる
@@ -172,15 +185,17 @@ export default async function HomePage() {
                     aria-hidden="true"
                     className="pointer-events-none absolute -inset-x-4 -inset-y-6 bg-[radial-gradient(ellipse_closest-side,rgb(217_169_46/0.25),rgb(217_169_46/0.1)_55%,rgb(217_169_46/0))] opacity-0 transition-opacity duration-400 ease-in-out group-hover:opacity-100 group-has-focus-visible:opacity-100 motion-reduce:transition-none"
                   />
-                  {item.href ? (
-                    <Link
+                  {item.href && item.external ? (
+                    <a
                       href={item.href}
-                      className={cn(
-                        itemClass,
-                        // フォーカスの線はキーボードのときだけ。細く、目立ちすぎない
-                        "focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-gold-deep focus-visible:outline-solid",
-                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(itemClass, focusRing)}
                     >
+                      {content}
+                    </a>
+                  ) : item.href ? (
+                    <Link href={item.href} className={cn(itemClass, focusRing)}>
                       {content}
                     </Link>
                   ) : (
