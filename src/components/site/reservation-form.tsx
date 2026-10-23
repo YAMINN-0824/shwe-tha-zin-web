@@ -90,15 +90,15 @@ export function ReservationForm({
         className="rounded-lg border border-gold/30 bg-ivory-soft px-6 py-10 outline-none md:px-10"
       >
         <span aria-hidden="true" className="block h-px w-8 bg-gold" />
-        <h3 className="mt-5 text-2xl leading-snug">{form.success.heading}</h3>
+        <h3 className="mt-5 text-h3">{form.success.heading}</h3>
         {state.reservedAt !== "" && (
-          <p className="mt-4 font-heading text-lg tracking-wide">
+          <p className="mt-4 font-heading text-lead tracking-wide">
             {formatReservedAt(state.reservedAt, locale)}
             <br />
             {form.partySizeSummary.replace("{count}", String(state.partySize))}
           </p>
         )}
-        <p className="mt-4 leading-loose text-forest-soft">{successBody}</p>
+        <p className="mt-4 text-body text-forest-soft">{successBody}</p>
         <Button
           type="button"
           variant="link"
@@ -125,13 +125,13 @@ export function ReservationForm({
     const key = errors[field];
     if (!key) return null;
     return (
-      <p id={`${field}-error`} className="text-sm text-destructive">
+      <p id={`${field}-error`} className="text-small text-destructive">
         {form.errors[key]}
       </p>
     );
   }
   const optionalMark = (
-    <span className="ml-2 text-sm font-normal text-forest-soft">{form.optional}</span>
+    <span className="ml-2 text-small font-normal text-forest-soft">{form.optional}</span>
   );
 
   return (
@@ -291,7 +291,7 @@ export function ReservationForm({
 
       <div className="flex flex-col gap-4 sm:col-span-2">
         {formError && (
-          <p role="alert" className="text-sm leading-relaxed text-destructive">
+          <p role="alert" className="text-small text-destructive">
             {form.errors[formError]}
           </p>
         )}

@@ -8,13 +8,13 @@ import { Phrases } from "@/components/site/phrases";
 import { photos } from "@/components/site/photos";
 import { Plate } from "@/components/site/plate";
 import { ReservationForm } from "@/components/site/reservation-form";
-import { SectionHeading, sectionBodyText } from "@/components/site/section-heading";
+import { SectionHeading } from "@/components/site/section-heading";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { MAX_PARTY_SIZE, isThadingyutEventOpen, reservationSlots } from "@/lib/shop";
 import { cn } from "@/lib/utils";
 
 const menuLinkClass =
-  "inline-block rounded-sm text-lg text-leaf-deep underline decoration-leaf/50 underline-offset-[0.4em] transition-colors duration-300 hover:text-forest hover:decoration-forest focus-visible:outline-2 focus-visible:outline-ring";
+  "inline-block rounded-sm text-body text-leaf-deep underline decoration-leaf/50 underline-offset-[0.4em] transition-colors duration-300 hover:text-forest hover:decoration-forest focus-visible:outline-2 focus-visible:outline-ring";
 // 細い線のアイコン（DESIGN.md「アイコン」）
 const iconStroke = 1.25;
 
@@ -41,10 +41,8 @@ export default async function HomePage() {
               意味の文章は、ひとことから少しはなす（lg:mt-14） */}
           <div className="max-w-xl animate-bloom lg:max-w-none">
             {/* text-balance：1 語だけの行ができないよう、行の長さをそろえる */}
-            {/* 大きさ：1280px 以上で 62px（セクションの見出し 56px より少し大きい）。せまい画面では、
-                「母の台所の味を、」「mother's kitchen.」が 1 行に入る大きさまで小さくする
-                （スマホ 8.4vw、1024〜1279px は 48px） */}
-            <h1 className="text-[8.4vw] leading-[1.5] tracking-wide text-balance min-[400px]:text-[clamp(1.75rem,1.538rem+2.921vw,3.875rem)] lg:max-xl:text-[3rem]">
+            {/* text-hero（30px → 48px）。金の丸も、この大きさに合わせて大きくなる */}
+            <h1 className="text-hero tracking-wide text-balance">
               {hero.lead.before}
               {/* 丸のことばと、そのあと（"mother's kitchen."）は、とちゅうで改行しない */}
               <span className="inline-block whitespace-nowrap">
@@ -56,8 +54,7 @@ export default async function HomePage() {
               {hero.lead.gap}
               <span className="inline-block">{hero.lead.close}</span>
             </h1>
-            {/* 名前の意味：390px で 16px → 1280px 以上で 21px */}
-            <p className="mt-8 max-w-lg text-[clamp(1rem,0.863rem+0.562vw,1.3125rem)] leading-loose text-forest-soft lg:mt-14">
+            <p className="mt-8 max-w-lg text-lead text-forest-soft lg:mt-12">
               <Phrases>{hero.meaning}</Phrases>
             </p>
           </div>
@@ -68,7 +65,7 @@ export default async function HomePage() {
             {/* ふきだし：スマホ〜タブレットはミャーの頭の上、広い画面（xl）は頭の右（コック帽の横の、空いたところ）
                 右はしは、ヘッダーの「予約する」の右はしとそろえる。ミャーのあとに、しずかに出る */}
             <figcaption className="relative z-10 mr-[15%] mb-4 animate-bloom [animation-delay:1400ms] sm:mr-24 lg:mr-28 xl:absolute xl:top-[5%] xl:-right-[11.5rem] xl:mr-0 xl:mb-0">
-              <p className="relative rounded-xl border border-gold-deep/35 bg-ivory-soft px-4 py-2.5 font-heading text-sm leading-relaxed tracking-wide whitespace-nowrap text-forest-soft">
+              <p className="relative rounded-xl border border-gold-deep/35 bg-ivory-soft px-4 py-2.5 font-heading text-small tracking-wide whitespace-nowrap text-forest-soft">
                 {hero.mascot.greeting.map((line) => (
                   <span key={line} className="block">
                     {line}
@@ -110,7 +107,7 @@ export default async function HomePage() {
               label={about.label}
               heading={about.heading}
             />
-            <div className={cn("mt-8 flex flex-col gap-4 leading-loose", sectionBodyText)}>
+            <div className="mt-8 flex flex-col gap-4 text-body">
               {about.body.map((line) => (
                 <p key={line}>
                   <Phrases>{line}</Phrases>
@@ -127,7 +124,7 @@ export default async function HomePage() {
                 className="h-auto w-full"
               />
             </MistReveal>
-            <figcaption className="mt-3 text-sm text-forest-soft">
+            <figcaption className="mt-3 text-small text-forest-soft">
               <Phrases>{about.photoCaption}</Phrases>
             </figcaption>
           </figure>
@@ -157,9 +154,9 @@ export default async function HomePage() {
                     className="size-8 shrink-0 text-forest"
                   />
                   <div className="min-w-0">
-                    <h3 className="text-lg leading-snug">{item.title}</h3>
+                    <h3 className="text-h3">{item.title}</h3>
                     {/* 光が強くなると、文字も少し濃くして読みやすさを保つ */}
-                    <p className="text-sm leading-normal text-gold-deep transition-colors duration-400 ease-in-out group-hover:text-gold-ink group-has-focus-visible:text-gold-ink motion-reduce:transition-none lg:whitespace-nowrap">
+                    <p className="text-small text-gold-deep transition-colors duration-400 ease-in-out group-hover:text-gold-ink group-has-focus-visible:text-gold-ink motion-reduce:transition-none lg:whitespace-nowrap">
                       {item.detail}
                     </p>
                   </div>
@@ -231,10 +228,10 @@ export default async function HomePage() {
                     plateOnRight && "md:order-1 md:justify-self-end",
                   )}
                 >
-                  <h3 className="text-2xl leading-snug">
+                  <h3 className="text-h3">
                     <Phrases>{item.name}</Phrases>
                   </h3>
-                  <p className="mt-3 leading-relaxed text-forest-soft">
+                  <p className="mt-3 text-body text-forest-soft">
                     <Phrases>{item.description}</Phrases>
                   </p>
                 </div>
@@ -255,12 +252,17 @@ export default async function HomePage() {
       >
         <div>
           <SectionHeading id="offer-heading" label={offer.label} heading={offer.heading} />
-          <p className={cn("mt-8 max-w-sm leading-loose text-forest-soft", sectionBodyText)}>
+          <p className="mt-6 max-w-sm text-body text-forest-soft">
             <Phrases>{offer.body}</Phrases>
           </p>
         </div>
         {/* 押すと、見出しのうしろに金の光がともる、トグルのボタン（クライアント） */}
-        <OfferList items={offer.items} />
+        <OfferList
+          items={offer.items.map((item) => ({
+            icon: item.icon,
+            title: <Phrases>{item.title}</Phrases>,
+          }))}
+        />
       </section>
 
       {/* 6. イベント：タディンジュット祭り。11 月 1 日（日本時間）が終わったら出さない */}
@@ -278,16 +280,16 @@ export default async function HomePage() {
                 heading={event.heading}
                 tone="dark"
               />
-              <p className="mt-3 font-heading text-lg tracking-wide text-ivory/80">
+              <p className="mt-3 font-heading text-lead tracking-wide text-ivory/80">
                 {event.subheading}
               </p>
-              <p className={cn("mt-8 leading-loose", sectionBodyText)}>
+              <p className="mt-8 text-body">
                 <Phrases>{event.offer}</Phrases>
               </p>
-              <p className={cn("mt-4 leading-loose text-ivory/80", sectionBodyText)}>
+              <p className="mt-4 text-body text-ivory/80">
                 <Phrases>{event.body}</Phrases>
               </p>
-              <dl className="mt-8 grid gap-3 text-sm sm:grid-cols-[auto_1fr] sm:gap-x-6">
+              <dl className="mt-8 grid gap-3 text-small sm:grid-cols-[auto_1fr] sm:gap-x-6">
                 <dt className="text-gold">{event.periodLabel}</dt>
                 <dd className="text-ivory/90">
                   <Phrases>{event.period}</Phrases>
@@ -328,7 +330,7 @@ export default async function HomePage() {
               label={reserve.label}
               heading={reserve.heading}
             />
-            <p className={cn("mt-8 max-w-md leading-loose", sectionBodyText)}>
+            <p className="mt-6 max-w-md text-body">
               <Phrases>{reserve.body}</Phrases>
             </p>
           </div>

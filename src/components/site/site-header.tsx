@@ -32,7 +32,7 @@ export function SiteHeader({
           className="flex items-center gap-2.5 rounded-sm focus-visible:outline-2 focus-visible:outline-ring"
         >
           <OrchidMark className="size-9 text-leaf" />
-          <span className="font-heading text-lg font-medium tracking-[0.14em] whitespace-nowrap">
+          <span className="font-heading text-lead font-medium tracking-[0.14em] whitespace-nowrap">
             SHWE THA ZIN
           </span>
         </Link>
@@ -59,7 +59,7 @@ export function SiteHeader({
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn(linkClass, "border-b border-border py-4 text-lg")}
+                className={cn(linkClass, "border-b border-border py-4 text-lead")}
               >
                 {link.label}
               </Link>

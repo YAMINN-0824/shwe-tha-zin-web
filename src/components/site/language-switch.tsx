@@ -39,7 +39,7 @@ export function LanguageSwitch({
             aria-label={labels[target].name}
             aria-current={target === locale ? "true" : undefined}
             className={cn(
-              "rounded-sm px-1 py-0.5 text-sm tracking-wider transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-ring",
+              "rounded-sm px-1 py-0.5 text-small tracking-wider transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-ring",
               target === locale
                 ? "font-medium text-forest"
                 : "text-leaf-deep hover:text-forest",
