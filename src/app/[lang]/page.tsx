@@ -9,6 +9,7 @@ import { photos } from "@/components/site/photos";
 import { Plate } from "@/components/site/plate";
 import { ReservationForm } from "@/components/site/reservation-form";
 import { SectionHeading } from "@/components/site/section-heading";
+import { SectionLink } from "@/components/site/section-link";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { MAX_PARTY_SIZE, isThadingyutEventOpen, reservationSlots } from "@/lib/shop";
 import { cn } from "@/lib/utils";
@@ -194,9 +195,9 @@ export default async function HomePage() {
                       {content}
                     </a>
                   ) : item.href ? (
-                    <Link href={item.href} className={cn(itemClass, focusRing)}>
+                    <SectionLink href={item.href} className={cn(itemClass, focusRing)}>
                       {content}
-                    </Link>
+                    </SectionLink>
                   ) : (
                     <div className={itemClass}>{content}</div>
                   )}

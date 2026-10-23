@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { LanguageSwitch } from "./language-switch";
 import { MobileNav } from "./mobile-nav";
 import { OrchidMark } from "./orchid-mark";
+import { SectionLink } from "./section-link";
 
 const linkClass =
   "rounded-sm text-forest/85 transition-colors duration-300 hover:text-forest focus-visible:outline-2 focus-visible:outline-ring";
@@ -41,28 +42,28 @@ export function SiteHeader({
         <div className="hidden items-center gap-8 md:flex">
           <nav aria-label={nav.menu} className="flex items-center gap-7">
             {links.map((link) => (
-              <Link key={link.href} href={link.href} className={linkClass}>
+              <SectionLink key={link.href} href={link.href} className={linkClass}>
                 {link.label}
-              </Link>
+              </SectionLink>
             ))}
           </nav>
           <LanguageSwitch locale={locale} label={nav.language} />
-          <Link href={`/${locale}#reservation`} className={reserveClass}>
+          <SectionLink href={`/${locale}#reservation`} className={reserveClass}>
             {nav.reserve}
-          </Link>
+          </SectionLink>
         </div>
 
         {/* スマホ */}
         <MobileNav openLabel={nav.openMenu} closeLabel={nav.closeMenu}>
           <nav aria-label={nav.menu} className="flex flex-col">
             {links.map((link) => (
-              <Link
+              <SectionLink
                 key={link.href}
                 href={link.href}
                 className={cn(linkClass, "border-b border-border py-4 text-lead")}
               >
                 {link.label}
-              </Link>
+              </SectionLink>
             ))}
           </nav>
           <LanguageSwitch
@@ -70,12 +71,12 @@ export function SiteHeader({
             label={nav.language}
             className="mt-6 text-base"
           />
-          <Link
+          <SectionLink
             href={`/${locale}#reservation`}
             className={cn(reserveClass, "mt-8 w-full")}
           >
             {nav.reserve}
-          </Link>
+          </SectionLink>
         </MobileNav>
       </div>
     </header>
