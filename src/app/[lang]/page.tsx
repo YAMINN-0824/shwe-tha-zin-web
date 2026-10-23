@@ -36,15 +36,18 @@ export default async function HomePage() {
     <main className="flex-1">
       {/* 1. ヒーロー。ページを開いたときの動き：ことば → ミャー → ふきだし → 金の丸 */}
       <section className="relative overflow-x-clip">
-        <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-10 pb-20 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:pt-16 lg:pb-28">
+        <div className="relative mx-auto grid max-w-6xl gap-x-12 px-5 pt-10 pb-20 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:pt-16 lg:pb-28 xl:grid-cols-[1fr_31.5rem] xl:gap-x-8">
           {/* 左：いちばん大きいひとことと、名前の意味。1 つのまとまりで、ミャーと上下まん中にそろえる
-              意味の文章だけ少し下げる（lg:mt-14）。ひとことは動かさないよう、まとまりを 1rem 下げる */}
-          <div className="max-w-xl animate-bloom lg:max-w-[36.5rem] lg:translate-y-4">
+              意味の文章は、ひとことから少しはなす（lg:mt-14） */}
+          <div className="max-w-xl animate-bloom lg:max-w-none">
             {/* text-balance：1 語だけの行ができないよう、行の長さをそろえる */}
-            <h1 className="text-[clamp(1.75rem,8vw,2.75rem)] leading-[1.6] tracking-wide text-balance">
+            {/* 大きさ：1280px 以上で 62px（セクションの見出し 56px より少し大きい）。せまい画面では、
+                「母の台所の味を、」「mother's kitchen.」が 1 行に入る大きさまで小さくする
+                （スマホ 8.4vw、1024〜1279px は 48px） */}
+            <h1 className="text-[8.4vw] leading-[1.5] tracking-wide text-balance min-[400px]:text-[clamp(1.75rem,1.538rem+2.921vw,3.875rem)] lg:max-xl:text-[3rem]">
               {hero.lead.before}
               {/* 丸のことばと、そのあと（"mother's kitchen."）は、とちゅうで改行しない */}
-              <span className="inline-block">
+              <span className="inline-block whitespace-nowrap">
                 <HandDrawnCircle drawClassName="[animation-delay:1700ms]">
                   {hero.lead.mark}
                 </HandDrawnCircle>
@@ -53,7 +56,8 @@ export default async function HomePage() {
               {hero.lead.gap}
               <span className="inline-block">{hero.lead.close}</span>
             </h1>
-            <p className="mt-8 max-w-md leading-loose text-forest-soft lg:mt-14">
+            {/* 名前の意味：390px で 16px → 1280px 以上で 21px */}
+            <p className="mt-8 max-w-lg text-[clamp(1rem,0.863rem+0.562vw,1.3125rem)] leading-loose text-forest-soft lg:mt-14">
               <Phrases>{hero.meaning}</Phrases>
             </p>
           </div>
