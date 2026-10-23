@@ -8,7 +8,7 @@ import { Phrases } from "@/components/site/phrases";
 import { photos } from "@/components/site/photos";
 import { Plate } from "@/components/site/plate";
 import { ReservationForm } from "@/components/site/reservation-form";
-import { SectionHeading } from "@/components/site/section-heading";
+import { SectionHeading, sectionBodyText } from "@/components/site/section-heading";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { MAX_PARTY_SIZE, isThadingyutEventOpen, reservationSlots } from "@/lib/shop";
 import { cn } from "@/lib/utils";
@@ -106,7 +106,7 @@ export default async function HomePage() {
               label={about.label}
               heading={about.heading}
             />
-            <div className="mt-8 flex flex-col gap-4 text-lg leading-loose">
+            <div className={cn("mt-8 flex flex-col gap-4 leading-loose", sectionBodyText)}>
               {about.body.map((line) => (
                 <p key={line}>
                   <Phrases>{line}</Phrases>
@@ -251,7 +251,7 @@ export default async function HomePage() {
       >
         <div>
           <SectionHeading id="offer-heading" label={offer.label} heading={offer.heading} />
-          <p className="mt-6 max-w-sm leading-loose text-forest-soft">
+          <p className={cn("mt-8 max-w-sm leading-loose text-forest-soft", sectionBodyText)}>
             <Phrases>{offer.body}</Phrases>
           </p>
         </div>
@@ -277,10 +277,10 @@ export default async function HomePage() {
               <p className="mt-3 font-heading text-lg tracking-wide text-ivory/80">
                 {event.subheading}
               </p>
-              <p className="mt-8 text-lg leading-loose">
+              <p className={cn("mt-8 leading-loose", sectionBodyText)}>
                 <Phrases>{event.offer}</Phrases>
               </p>
-              <p className="mt-4 leading-loose text-ivory/80">
+              <p className={cn("mt-4 leading-loose text-ivory/80", sectionBodyText)}>
                 <Phrases>{event.body}</Phrases>
               </p>
               <dl className="mt-8 grid gap-3 text-sm sm:grid-cols-[auto_1fr] sm:gap-x-6">
@@ -324,7 +324,7 @@ export default async function HomePage() {
               label={reserve.label}
               heading={reserve.heading}
             />
-            <p className="mt-6 max-w-md leading-loose">
+            <p className={cn("mt-8 max-w-md leading-loose", sectionBodyText)}>
               <Phrases>{reserve.body}</Phrases>
             </p>
           </div>

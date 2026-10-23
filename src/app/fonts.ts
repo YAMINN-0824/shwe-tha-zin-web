@@ -4,7 +4,8 @@ import { Shippori_Mincho, Zen_Kaku_Gothic_New } from "next/font/google";
 // 日本語のフォントはファイルが大きいので、preload しない（使う文字の分だけ読み込まれる）
 const shipporiMincho = Shippori_Mincho({
   variable: "--font-shippori-mincho",
-  weight: ["500", "600"],
+  // 400 はセクションの小さいラベル（細い字）
+  weight: ["400", "500", "600"],
   subsets: ["latin"],
   preload: false,
   display: "swap",
