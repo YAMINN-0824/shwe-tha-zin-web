@@ -1,5 +1,3 @@
-import type { PhotoName } from "@/components/site/photos";
-
 // サービスのアイコン（src/app/[lang]/page.tsx で絵にする）
 export type OfferIcon = "events" | "special" | "delivery";
 
@@ -65,25 +63,22 @@ const ja = {
     hours: "営業時間",
     reservation: "ご予約",
   },
-  // TODO: 仮の料理名と説明。お店の言葉に入れかえる
+  // トップページのメニュー。料理は Supabase の人気料理（src/lib/menu.ts）
   menu: {
     label: "メニュー",
     heading: "家族で囲む、いつもの料理",
     action: "メニューをすべて見る",
-    items: [
-      {
-        image: "rice-set" as PhotoName,
-        name: "ミャンマーごはんセット（仮）",
-        description: "ごはんと、小さなおかずをいろいろ。少しずつ味わえます。",
-        alt: "竹のお盆に、ごはんと、カレーやスープ、野菜のおかずの小さなお皿がたくさん並んでいる",
-      },
-      {
-        image: "fritters" as PhotoName,
-        name: "揚げ物の盛り合わせ（仮）",
-        description: "野菜や豆をからりと揚げて、すっぱいたれをつけて。",
-        alt: "竹のお盆に、豆や野菜の揚げ物と、レタス、キャベツ、緑のたれが盛られている",
-      },
-    ],
+  },
+  // メニューのページ（/ja/menu）。料理は Supabase から
+  menuPage: {
+    title: "メニュー",
+    label: "メニュー",
+    heading: "母の台所の、いつもの料理",
+    // TODO: 仮の文章。お店の言葉に入れかえる
+    body: "値段は、すべて税込みです。",
+    taxIncluded: "（税込）",
+    empty: "メニューを準備しています。もう少しお待ちください。",
+    back: "トップページへ戻る",
   },
   // TODO: 仮の文章。お店の言葉に入れかえる
   offer: {

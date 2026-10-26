@@ -67,25 +67,22 @@ const en: Dictionary = {
     hours: "Open hours",
     reservation: "Reservation",
   },
-  // TODO: placeholder dish names and descriptions. Replace with the shop's own words
+  // Top page menu. The dishes are the popular ones in Supabase (src/lib/menu.ts)
   menu: {
     label: "Our menu",
     heading: "Everyday dishes, made for sharing",
     action: "See the full menu",
-    items: [
-      {
-        image: "rice-set",
-        name: "Burmese rice set",
-        description: "Rice with a spread of small side dishes, a little of everything.",
-        alt: "A woven tray with rice and many small bowls of curry, soup and vegetable dishes",
-      },
-      {
-        image: "fritters",
-        name: "Burmese fritters platter",
-        description: "Crisp vegetable and bean fritters with a tangy dipping sauce.",
-        alt: "A woven tray of bean and vegetable fritters with lettuce, cabbage and a green sauce",
-      },
-    ],
+  },
+  // The menu page (/en/menu). The dishes come from Supabase
+  menuPage: {
+    title: "Menu",
+    label: "Our menu",
+    heading: "From our mother's kitchen",
+    // TODO: placeholder text. Replace with the shop's own words
+    body: "All prices include tax.",
+    taxIncluded: " (tax incl.)",
+    empty: "We're getting the menu ready. Please check back soon.",
+    back: "Back to the top page",
   },
   // TODO: placeholder text. Replace with the shop's own words
   offer: {

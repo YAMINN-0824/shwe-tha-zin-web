@@ -10,12 +10,16 @@ export function Plate({
   preload = false,
   className,
 }: {
-  src: StaticImageData;
+  // import した写真か、Supabase Storage の写真の URL
+  src: StaticImageData | string;
   alt: string;
   sizes: string;
   preload?: boolean;
   className?: string;
 }) {
+  // URL の写真は大きさがわからないので、正方形として場所をとる（切り抜きのお皿は、ほぼ正方形）
+  // h-auto なので、読みこんだあとは写真の本当の形になる
+  const size = typeof src === "string" ? { width: 1024, height: 1024 } : {};
   return (
     <div className={cn("relative", className)}>
       <span
@@ -26,6 +30,7 @@ export function Plate({
         src={src}
         alt={alt}
         sizes={sizes}
+        {...size}
         preload={preload}
         className="relative h-auto w-full"
       />

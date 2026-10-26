@@ -10,9 +10,12 @@ export function SectionHeading({
   label,
   heading,
   tone = "light",
+  as: Heading = "h2",
   className,
 }: {
   id: string;
+  // ページのいちばん上の見出しは h1（メニューのページなど）
+  as?: "h1" | "h2";
   label: string;
   heading: string;
   // dark = 森の緑の上（金とアイボリーをそのまま文字に使える）
@@ -30,12 +33,12 @@ export function SectionHeading({
         <Phrases>{label}</Phrases>
       </p>
       <span aria-hidden="true" className="mt-4 h-px w-10 bg-gold md:w-12" />
-      <h2
+      <Heading
         id={id}
         className="mt-5 text-h2 text-balance"
       >
         <Phrases>{heading}</Phrases>
-      </h2>
+      </Heading>
     </div>
   );
 }

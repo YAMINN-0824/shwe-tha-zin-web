@@ -46,7 +46,10 @@ select pg_temp.ok('anon: reservations が 0 行に見える', (select count(*) f
 select pg_temp.ok('anon: orders が 0 行に見える',       (select count(*) from public.orders) = 0);
 select pg_temp.ok('anon: order_items が 0 行に見える',  (select count(*) from public.order_items) = 0);
 select pg_temp.ok('anon: staff が 0 行に見える',        (select count(*) from public.staff) = 0);
-select pg_temp.ok('anon: メニューは見える (2 行)',       (select count(*) from public.menu_items) = 2);
+-- マイグレーションの仮のメニューも入っているので、テスト用の分類だけで数える
+select pg_temp.ok('anon: お店に出している料理だけ見える (1 行)', (select count(*) from public.menu_items where category_id = 'aaaaaaaa-0000-0000-0000-000000000001') = 1);
+select pg_temp.ok('anon: 出していない料理は見えない',
+  not exists (select 1 from public.menu_items where id = 'bbbbbbbb-0000-0000-0000-000000000002'));
 select pg_temp.expect_error('anon: orders に直接 INSERT できない',
   $q$insert into public.orders (order_type, table_number, total_price) values ('dine_in', 'T1', 0)$q$);
 select pg_temp.expect_error('anon: reservations に直接 INSERT できない',
@@ -117,10 +120,14 @@ select pg_temp.ok('非 staff: reservations が 0 行', (select count(*) from pub
 select pg_temp.ok('非 staff: orders が 0 行',       (select count(*) from public.orders) = 0);
 select pg_temp.ok('非 staff: order_items が 0 行',  (select count(*) from public.order_items) = 0);
 select pg_temp.ok('非 staff: is_staff() = false',   not public.is_staff());
+select pg_temp.ok('非 staff: お店に出している料理だけ見える (1 行)', (select count(*) from public.menu_items where category_id = 'aaaaaaaa-0000-0000-0000-000000000001') = 1);
+update public.menu_items set is_popular = true where true;
 update public.orders set status = 'cancelled' where true;
 update public.reservations set status = 'cancelled' where true;
 delete from public.reservations where true;
 reset role;
+select pg_temp.ok('非 staff: menu_items を UPDATE できていない (人気にできない)',
+  not exists (select 1 from public.menu_items where category_id = 'aaaaaaaa-0000-0000-0000-000000000001' and is_popular));
 select pg_temp.ok('非 staff: orders を UPDATE できていない',
   not exists (select 1 from public.orders where status = 'cancelled'));
 select pg_temp.ok('非 staff: reservations を UPDATE できていない',
@@ -141,6 +148,10 @@ select pg_temp.ok('staff: 新しい予約は pending で、名前と note は tr
 select pg_temp.ok('staff: order_items に名前と値段がコピーされている',
   exists (select 1 from public.order_items where item_name_ja = 'チキンカレー' and unit_price = 1000 and quantity = 3));
 select pg_temp.ok('staff: staff テーブルは自分の行だけ', (select count(*) from public.staff) = 1);
+select pg_temp.ok('staff: 出していない料理も見える (2 行)', (select count(*) from public.menu_items where category_id = 'aaaaaaaa-0000-0000-0000-000000000001') = 2);
+update public.menu_items set is_popular = true, popular_sort_order = 5 where id = 'bbbbbbbb-0000-0000-0000-000000000001';
+select pg_temp.ok('staff: 人気料理にできる',
+  (select is_popular and popular_sort_order = 5 from public.menu_items where id = 'bbbbbbbb-0000-0000-0000-000000000001'));
 
 update public.reservations set status = 'confirmed' where id = 'cccccccc-0000-0000-0000-000000000001';
 select pg_temp.ok('staff: 過去の予約を UPDATE できる',

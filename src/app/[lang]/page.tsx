@@ -11,6 +11,7 @@ import { ReservationForm } from "@/components/site/reservation-form";
 import { SectionHeading } from "@/components/site/section-heading";
 import { SectionLink } from "@/components/site/section-link";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
+import { getPopularDishes } from "@/lib/menu";
 import { MAX_PARTY_SIZE, isThadingyutEventOpen, reservationSlots } from "@/lib/shop";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +25,8 @@ export default async function HomePage() {
   const dict = await getDictionary();
   const { hero, about, shop, info, menu, offer, event, reserve } = dict;
   const showEvent = await isThadingyutEventOpen();
+  // メニューの人気料理（Supabase。最大 4 つ）
+  const popularDishes = await getPopularDishes(locale);
   const reserveHref = `/${locale}#reservation`;
 
   // お店の情報の帯。くわしい文字は 1 行だけ。ご予約は、全体がフォームへのリンク
@@ -215,46 +218,50 @@ export default async function HomePage() {
         className="mx-auto max-w-6xl scroll-mt-10 overflow-x-clip px-5 py-20 md:py-32"
       >
         <SectionHeading id="menu-heading" label={menu.label} heading={menu.heading} />
-        <ul className="mt-14 flex flex-col gap-20 md:mt-20 md:gap-0">
-          {menu.items.map((item, index) => {
-            const plateOnRight = index % 2 === 1;
-            return (
-              <li
-                key={item.image}
-                className={cn(
-                  "grid items-center gap-8 md:grid-cols-2 md:gap-16",
-                  plateOnRight && "md:-mt-12",
-                )}
-              >
-                <Plate
-                  src={photos[item.image]}
-                  alt={item.alt}
-                  sizes="(min-width: 768px) 448px, 82vw"
+        {popularDishes.length > 0 && (
+          <ul className="mt-14 flex flex-col gap-20 md:mt-20 md:gap-0">
+            {popularDishes.map((dish, index) => {
+              const plateOnRight = index % 2 === 1;
+              return (
+                <li
+                  key={dish.id}
                   className={cn(
-                    "w-[82%] max-w-md",
-                    plateOnRight
-                      ? "ml-auto md:order-2 md:ml-0 md:justify-self-start"
-                      : "md:justify-self-end",
-                  )}
-                />
-                <div
-                  className={cn(
-                    "max-w-sm",
-                    plateOnRight && "md:order-1 md:justify-self-end",
+                    "grid items-center gap-8 md:grid-cols-2 md:gap-16",
+                    plateOnRight && "md:-mt-12",
                   )}
                 >
-                  <h3 className="text-h3">
-                    <Phrases>{item.name}</Phrases>
-                  </h3>
-                  <p className="mt-3 text-body text-forest-soft">
-                    <Phrases>{item.description}</Phrases>
-                  </p>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-        {/* メニューのページは、これから作る */}
+                  {/* 人気料理は、写真のあるものだけ（src/lib/menu.ts） */}
+                  {dish.image && (
+                    <Plate
+                      src={dish.image.url}
+                      alt={dish.image.alt}
+                      sizes="(min-width: 768px) 448px, 82vw"
+                      className={cn(
+                        "w-[82%] max-w-md",
+                        plateOnRight
+                          ? "ml-auto md:order-2 md:ml-0 md:justify-self-start"
+                          : "md:justify-self-end",
+                      )}
+                    />
+                  )}
+                  <div
+                    className={cn(
+                      "max-w-sm",
+                      plateOnRight && "md:order-1 md:justify-self-end",
+                    )}
+                  >
+                    <h3 className="text-h3">
+                      <Phrases>{dish.name}</Phrases>
+                    </h3>
+                    <p className="mt-3 text-body text-forest-soft">
+                      <Phrases>{dish.description}</Phrases>
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
         <Link href={`/${locale}/menu`} className={cn(menuLinkClass, "mt-16 md:mt-20")}>
           {menu.action}
         </Link>
