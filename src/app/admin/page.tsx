@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { requireStaff } from "@/lib/auth/staff";
@@ -24,15 +25,23 @@ async function AdminHome() {
   const staff = await requireStaff();
 
   return (
-    <div className="flex items-center justify-between gap-4">
-      <p>
-        ようこそ、<span className="font-medium">{staff.name}</span> さん
-      </p>
-      <form action={signOut}>
-        <Button type="submit" variant="outline">
-          ログアウト
-        </Button>
-      </form>
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-4">
+        <p>
+          ようこそ、<span className="font-medium">{staff.name}</span> さん
+        </p>
+        <form action={signOut}>
+          <Button type="submit" variant="outline">
+            ログアウト
+          </Button>
+        </form>
+      </div>
+      <Link
+        href="/admin/reservations"
+        className="flex h-14 items-center justify-center rounded-lg bg-primary text-body font-medium text-primary-foreground hover:bg-primary/80"
+      >
+        予約を見る
+      </Link>
     </div>
   );
 }

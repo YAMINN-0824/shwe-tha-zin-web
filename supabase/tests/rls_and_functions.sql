@@ -56,6 +56,14 @@ select pg_temp.expect_error('anon: menu_items を INSERT できない',
 update public.menu_items set price = 1 where true;
 select pg_temp.ok('anon: menu_items の UPDATE は 0 行 (値段は変わらない)',
   (select price from public.menu_items where id = 'bbbbbbbb-0000-0000-0000-000000000001') = 1000);
+-- 予約は anon には見えないので、postgres にもどって確かめる
+update public.reservations set status = 'cancelled' where true;
+delete from public.reservations where true;
+reset role;
+select pg_temp.ok('anon: reservations を UPDATE できていない',
+  (select status from public.reservations where id = 'cccccccc-0000-0000-0000-000000000001') = 'pending');
+select pg_temp.ok('anon: reservations を DELETE できていない', (select count(*) from public.reservations) = 1);
+set local role anon;
 
 \echo '--- 2. request_reservation() (anon) ---'
 select pg_temp.ok('予約できる (pending になる)',
@@ -110,9 +118,14 @@ select pg_temp.ok('非 staff: orders が 0 行',       (select count(*) from pub
 select pg_temp.ok('非 staff: order_items が 0 行',  (select count(*) from public.order_items) = 0);
 select pg_temp.ok('非 staff: is_staff() = false',   not public.is_staff());
 update public.orders set status = 'cancelled' where true;
+update public.reservations set status = 'cancelled' where true;
+delete from public.reservations where true;
 reset role;
 select pg_temp.ok('非 staff: orders を UPDATE できていない',
   not exists (select 1 from public.orders where status = 'cancelled'));
+select pg_temp.ok('非 staff: reservations を UPDATE できていない',
+  not exists (select 1 from public.reservations where status = 'cancelled'));
+select pg_temp.ok('非 staff: reservations を DELETE できていない', (select count(*) from public.reservations) = 2);
 
 -- =========================================================
 \echo '--- 5. お店の人 (staff) ---'
@@ -132,6 +145,15 @@ select pg_temp.ok('staff: staff テーブルは自分の行だけ', (select coun
 update public.reservations set status = 'confirmed' where id = 'cccccccc-0000-0000-0000-000000000001';
 select pg_temp.ok('staff: 過去の予約を UPDATE できる',
   (select status from public.reservations where id = 'cccccccc-0000-0000-0000-000000000001') = 'confirmed');
+update public.reservations set status = 'cancelled' where customer_name = '山田';
+select pg_temp.ok('staff: 予約をキャンセルにできる',
+  (select status from public.reservations where customer_name = '山田') = 'cancelled');
+update public.reservations set status = 'pending' where customer_name = '山田';
+select pg_temp.ok('staff: キャンセルした予約を確認待ちに戻せる',
+  (select status from public.reservations where customer_name = '山田') = 'pending');
+delete from public.reservations where true;
+select pg_temp.ok('staff でも reservations は DELETE できない (ポリシーがない)',
+  (select count(*) from public.reservations) = 2);
 update public.orders set status = 'completed' where id = 'dddddddd-0000-0000-0000-000000000001';
 select pg_temp.ok('staff: 過去の注文 (pickup_at が過去) を UPDATE できる',
   (select status from public.orders where id = 'dddddddd-0000-0000-0000-000000000001') = 'completed');
