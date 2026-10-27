@@ -70,7 +70,7 @@ const en: Dictionary = {
   // Top page menu. The dishes are the popular ones in Supabase (src/lib/menu.ts)
   menu: {
     label: "Our menu",
-    heading: "Everyday dishes, made for sharing",
+    heading: "Popular dishes",
     action: "See the full menu",
   },
   // The menu page (/en/menu). The dishes come from Supabase

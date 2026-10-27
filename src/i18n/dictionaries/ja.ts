@@ -66,7 +66,7 @@ const ja = {
   // トップページのメニュー。料理は Supabase の人気料理（src/lib/menu.ts）
   menu: {
     label: "メニュー",
-    heading: "家族で囲む、いつもの料理",
+    heading: "人気メニュー",
     action: "メニューをすべて見る",
   },
   // メニューのページ（/ja/menu）。料理は Supabase から
