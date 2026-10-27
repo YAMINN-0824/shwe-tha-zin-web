@@ -83,6 +83,13 @@ const en: Dictionary = {
     taxIncluded: " (tax incl.)",
     empty: "We're getting the menu ready. Please check back soon.",
     back: "Back to the top page",
+    categories: "Menu categories",
+    showcase: {
+      roleDescription: "dish photo slider",
+      previous: "Previous dish",
+      next: "Next dish",
+      status: "{current} / {total}: {name}",
+    },
   },
   // TODO: placeholder text. Replace with the shop's own words
   offer: {

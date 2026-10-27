@@ -2,7 +2,10 @@ import Image, { type StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
 
 // 切り抜きの料理の写真と、やわらかい影（DESIGN.md「写真」）
-// 朝の光が左上から入るので、影は右下に少しずれる
+// 正方形のわくの中に、写真の形のまま入れる（丸いお皿も、背の高いグラスも、横長のお皿も）
+// わくの大きさが決まっているので、写真を読みこんでも、ページはずれない
+// 影は写真の形にそう drop-shadow。朝の光が左上から入るので、右下に少しずれる
+// 大きさは、わくのはば（cqw）にあわせる（小さいお皿でも大きいお皿でも、同じ見え方）
 export function Plate({
   src,
   alt,
@@ -17,22 +20,15 @@ export function Plate({
   preload?: boolean;
   className?: string;
 }) {
-  // URL の写真は大きさがわからないので、正方形として場所をとる（切り抜きのお皿は、ほぼ正方形）
-  // h-auto なので、読みこんだあとは写真の本当の形になる
-  const size = typeof src === "string" ? { width: 1024, height: 1024 } : {};
   return (
-    <div className={cn("relative", className)}>
-      <span
-        aria-hidden="true"
-        className="absolute inset-[3%] translate-x-[3%] translate-y-[5%] rounded-full bg-[radial-gradient(closest-side,rgb(31_42_30/0.3)_72%,rgb(31_42_30/0))]"
-      />
+    <div className={cn("@container relative aspect-square", className)}>
       <Image
         src={src}
         alt={alt}
         sizes={sizes}
-        {...size}
+        fill
         preload={preload}
-        className="relative h-auto w-full"
+        className="object-contain [filter:drop-shadow(1.5cqw_2.5cqw_2.5cqw_rgb(31_42_30/0.2))]"
       />
     </div>
   );

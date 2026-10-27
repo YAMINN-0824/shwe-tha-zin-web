@@ -79,6 +79,16 @@ const ja = {
     taxIncluded: "（税込）",
     empty: "メニューを準備しています。もう少しお待ちください。",
     back: "トップページへ戻る",
+    // 分類へ移るリンクの、まとまりの名前（読み上げ用）
+    categories: "メニューの分類",
+    // 料理の写真のスライド
+    showcase: {
+      roleDescription: "料理の写真のスライド",
+      previous: "前の料理",
+      next: "次の料理",
+      // 変わったときの読み上げ。{current} / {total} / {name} を入れかえる
+      status: "{current} / {total}、{name}",
+    },
   },
   // TODO: 仮の文章。お店の言葉に入れかえる
   offer: {

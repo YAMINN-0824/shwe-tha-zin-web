@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 料理の写真のもと（Git に入れない）
+/photos-raw/
+# Supabase Storage に入れる写真（Git に入れない）
+/photos-upload/
