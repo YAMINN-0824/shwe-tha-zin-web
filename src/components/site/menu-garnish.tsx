@@ -1,50 +1,48 @@
-import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
-// 料理のショーケースのまわりに、ゆっくりうかぶ材料の線画（DESIGN.md「メニューのページの動き」）
-// お皿のまわりの空いたところ（四すみ）だけに置く。料理・文字・ボタンには重ねない
+// 料理のお皿のまわりに、ゆっくりうかぶ材料の線画（DESIGN.md「メニューのページの動き」）
+// 1 品に PC 2 つ・スマホ 1 つだけ（ページを静かにするため）。料理ごとに組み合わせを変える
+// お皿のまわりの空いたところ（四すみ）だけに置く。料理・文字には重ねない
 // TODO: 本当の材料の切り抜き写真に入れかえてもよい
 
 type Kind = "leaf" | "sesame" | "chili" | "lime" | "peanut";
 
-const garnishes: {
-  kind: Kind;
-  // 場所・大きさ・どの画面で出すか（スマホ 3 つ、タブレット 4 つ、PC 5 つ）
-  className: string;
-  // スライドが変わったときに、少しだけ動くきょり
-  dx: string;
-  dy: string;
-  // うかぶ速さ（同じにならないように）
-  duration: string;
-  delay: string;
-}[] = [
-  { kind: "leaf", className: "top-[2%] right-[4%] w-14 md:w-16", dx: "-6px", dy: "8px", duration: "8s", delay: "0s" },
-  { kind: "sesame", className: "top-[7%] left-[6%] w-8", dx: "8px", dy: "4px", duration: "6.5s", delay: "-2s" },
-  { kind: "chili", className: "bottom-[3%] left-[5%] w-12 md:w-14", dx: "6px", dy: "-6px", duration: "9s", delay: "-4s" },
-  { kind: "lime", className: "bottom-[2%] right-[6%] hidden w-12 md:block md:w-14", dx: "-8px", dy: "-4px", duration: "7.5s", delay: "-1s" },
-  { kind: "peanut", className: "top-[44%] right-0 hidden w-8 lg:block", dx: "-4px", dy: "10px", duration: "6s", delay: "-3s" },
+// 場所と大きさ（四すみ。お皿はわくのまん中の 78%）
+const place: Record<Kind, string> = {
+  leaf: "top-[2%] right-[4%] w-12 md:w-16",
+  sesame: "top-[7%] left-[6%] w-7 md:w-8",
+  chili: "bottom-[3%] left-[5%] w-10 md:w-14",
+  lime: "bottom-[2%] right-[6%] w-10 md:w-14",
+  peanut: "top-[5%] right-[6%] w-6 md:w-8",
+};
+
+// 料理ごとの組み合わせ（1 つめはいつも出す、2 つめは PC だけ）。同じ角にならないように
+const pairs: [Kind, Kind][] = [
+  ["leaf", "chili"],
+  ["sesame", "lime"],
+  ["chili", "peanut"],
+  ["lime", "sesame"],
+  ["peanut", "chili"],
 ];
 
-export function MenuGarnish({ step }: { step: number }) {
+// うかぶ速さ（同じにならないように）
+const timing = [
+  { duration: "8s", delay: "0s" },
+  { duration: "6.5s", delay: "-3s" },
+];
+
+export function MenuGarnish({ index }: { index: number }) {
+  const pair = pairs[index % pairs.length] ?? pairs[0];
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-      {garnishes.map((garnish) => (
-        // 外がわ：スライドが変わると少し動く（step が 0 と 1 で、行ったり来たり）
-        <span
-          key={garnish.kind}
-          style={{ "--dx": garnish.dx, "--dy": garnish.dy, "--step": step } as CSSProperties}
-          className={cn(
-            "absolute block transition-[translate] duration-[900ms] ease-bloom",
-            "[translate:calc(var(--step)*var(--dx))_calc(var(--step)*var(--dy))] motion-reduce:[translate:none]",
-            garnish.className,
-          )}
-        >
-          {/* 内がわ：ゆっくりうかぶ。ショーケースが画面の外にあるときは止める */}
+      {pair?.map((kind, i) => (
+        <span key={kind} className={cn("absolute", place[kind], i > 0 && "hidden md:block")}>
+          {/* ゆっくりうかぶ。料理のブロックが画面の外にあるときは止める */}
           <span
-            style={{ animationDuration: garnish.duration, animationDelay: garnish.delay }}
-            className="block animate-float [animation-play-state:paused] group-data-[onscreen=true]/showcase:[animation-play-state:running] motion-reduce:animate-none"
+            style={{ animationDuration: timing[i]?.duration, animationDelay: timing[i]?.delay }}
+            className="block animate-float [animation-play-state:paused] group-data-[onscreen=true]/dish:[animation-play-state:running] motion-reduce:animate-none"
           >
-            <GarnishArt kind={garnish.kind} />
+            <GarnishArt kind={kind} />
           </span>
         </span>
       ))}

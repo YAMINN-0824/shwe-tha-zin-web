@@ -97,21 +97,8 @@
   }
 
   /* メニューのページだけ（DESIGN.md「メニューのページの動き」） */
-  /* スライドが変わったとき、料理の名前・説明・値段が、少しずつずれて出てくる */
-  --animate-rise: rise 0.5s var(--ease-bloom) both;
   /* うかぶ飾り：ゆっくり上下にゆれる */
   --animate-float: float 7s ease-in-out infinite alternate;
-
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(0.5rem);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
 
   @keyframes float {
     from {

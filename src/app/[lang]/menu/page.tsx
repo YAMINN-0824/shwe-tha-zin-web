@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CategoryTabs } from "@/components/site/category-tabs";
 import { MenuCategorySection } from "@/components/site/menu-category";
 import { Phrases } from "@/components/site/phrases";
 import { SectionHeading } from "@/components/site/section-heading";
-import { SectionLink } from "@/components/site/section-link";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { getMenu } from "@/lib/menu";
 
@@ -13,13 +13,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // メニューのページ：お店に出している料理を、分類ごとに（DESIGN.md「メニューのページ」）
+// 横から入ってくるお皿で、横スクロールが出ないように overflow-x-clip（sticky のタブは動く）
 export default async function MenuPage() {
   const locale = await getLocale();
   const { menuPage } = await getDictionary();
   const categories = await getMenu(locale);
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-5 py-20 md:py-28">
+    <main className="mx-auto w-full max-w-6xl overflow-x-clip px-5 py-20 md:py-28">
       <SectionHeading as="h1" id="menu-heading" label={menuPage.label} heading={menuPage.heading} />
       <p className="mt-6 text-body text-forest-soft">
         <Phrases>{menuPage.body}</Phrases>
@@ -31,23 +32,11 @@ export default async function MenuPage() {
         </p>
       ) : (
         <>
-          {/* 分類へ移るリンク。ほかの分類は、かくさない */}
-          <nav aria-label={menuPage.categories} className="mt-10 md:mt-12">
-            <ul className="flex flex-wrap gap-x-7 gap-y-1">
-              {categories.map((category) => (
-                <li key={category.id}>
-                  <SectionLink
-                    href={`#category-${category.id}`}
-                    className="inline-flex min-h-11 items-center rounded-sm text-body text-leaf-deep underline decoration-leaf/40 underline-offset-[0.4em] transition-colors duration-300 hover:text-forest hover:decoration-forest focus-visible:outline-2 focus-visible:outline-ring"
-                  >
-                    <Phrases>{category.name}</Phrases>
-                  </SectionLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="mt-16 flex flex-col gap-24 md:mt-24 md:gap-32">
+          <CategoryTabs
+            label={menuPage.categories}
+            categories={categories.map((category) => ({ id: category.id, name: category.name }))}
+          />
+          <div className="mt-16 flex flex-col gap-28 md:mt-24 md:gap-36">
             {categories.map((category, index) => (
               <MenuCategorySection
                 key={category.id}

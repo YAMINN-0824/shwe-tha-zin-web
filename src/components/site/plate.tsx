@@ -11,6 +11,8 @@ export function Plate({
   alt,
   sizes,
   preload = false,
+  onLoad,
+  onError,
   className,
 }: {
   // import した写真か、Supabase Storage の写真の URL
@@ -18,6 +20,9 @@ export function Plate({
   alt: string;
   sizes: string;
   preload?: boolean;
+  // 写真を読みこめたとき・読みこめなかったとき（メニューのページで、動きを始めるため）
+  onLoad?: (image: HTMLImageElement) => void;
+  onError?: () => void;
   className?: string;
 }) {
   return (
@@ -28,6 +33,8 @@ export function Plate({
         sizes={sizes}
         fill
         preload={preload}
+        onLoad={onLoad && ((event) => onLoad(event.currentTarget))}
+        onError={onError}
         className="object-contain [filter:drop-shadow(1.5cqw_2.5cqw_2.5cqw_rgb(31_42_30/0.2))]"
       />
     </div>
