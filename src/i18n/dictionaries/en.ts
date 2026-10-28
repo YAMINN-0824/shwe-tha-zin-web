@@ -84,7 +84,6 @@ const en: Dictionary = {
     empty: "We're getting the menu ready. Please check back soon.",
     back: "Back to the top page",
     categories: "Menu categories",
-    priceList: "Price list",
   },
   // TODO: placeholder text. Replace with the shop's own words
   offer: {

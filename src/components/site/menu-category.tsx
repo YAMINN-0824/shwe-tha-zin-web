@@ -4,7 +4,7 @@ import { DishBlock } from "./dish-block";
 import { Phrases } from "./phrases";
 
 // メニューのページの、1 つの分類（DESIGN.md「メニューのページ」）
-// 金の線 → 分類の名前（h2）→ 写真のある料理を 1 品ずつ（ジグザグ）→ すべての料理の値段リスト
+// 金の線 → 分類の名前（h2）→ 料理を 1 品ずつ（ジグザグ）
 export function MenuCategorySection({
   category,
   text,
@@ -16,15 +16,12 @@ export function MenuCategorySection({
   preload?: boolean;
 }) {
   const headingId = `category-${category.id}-heading`;
-  const priceListId = `category-${category.id}-prices`;
   const price = (value: number) => (
     <>
       {formatPrice(value)}
       <span className="text-small text-forest-soft">{text.taxIncluded}</span>
     </>
   );
-  // 写真のない料理は、値段リストだけに出す（かわりの写真は使わない）
-  const photoDishes = category.dishes.flatMap((dish) => (dish.image ? [{ ...dish, image: dish.image }] : []));
 
   return (
     <section id={`category-${category.id}`} aria-labelledby={headingId} className="scroll-mt-20">
@@ -33,9 +30,9 @@ export function MenuCategorySection({
         <Phrases>{category.name}</Phrases>
       </h2>
 
-      {photoDishes.length > 0 && (
-        <div className="mt-12 flex flex-col gap-16 md:mt-16 md:gap-24">
-          {photoDishes.map((dish, i) => (
+      <div className="mt-12 flex flex-col gap-16 md:mt-16 md:gap-24">
+        {category.dishes.map((dish, i) =>
+          dish.image ? (
             <DishBlock
               key={dish.id}
               headingId={`dish-${dish.id}`}
@@ -51,28 +48,21 @@ export function MenuCategorySection({
                 image: dish.image,
               }}
             />
-          ))}
-        </div>
-      )}
-
-      {/* 分類の最後：すべての料理の、小さい値段リスト（名前は上のブロックの h3 にあるので、見出しにしない） */}
-      <div className={photoDishes.length > 0 ? "mt-16 md:mt-24" : "mt-8"}>
-        <p id={priceListId} className="text-small text-forest-soft">
-          {text.priceList}
-        </p>
-        <ul aria-labelledby={`${headingId} ${priceListId}`} className="mt-3 flex max-w-xl flex-col">
-          {category.dishes.map((dish) => (
-            <li
-              key={dish.id}
-              className="flex items-baseline justify-between gap-x-6 border-b border-forest/10 py-3 first:border-t"
-            >
-              <span className="text-body">
+          ) : (
+            // 写真のない料理（ふつうはない。管理画面では写真が必要）：消えないように、文字だけ。動かさない
+            <article key={dish.id} aria-labelledby={`dish-${dish.id}`} className="md:mx-auto md:w-full md:max-w-[26rem]">
+              <h3 id={`dish-${dish.id}`} className="text-h3 text-balance">
                 <Phrases>{dish.name}</Phrases>
-              </span>
-              <span className="text-body whitespace-nowrap tabular-nums">{price(dish.price)}</span>
-            </li>
-          ))}
-        </ul>
+              </h3>
+              {dish.description && (
+                <p className="mt-4 text-body text-forest-soft">
+                  <Phrases>{dish.description}</Phrases>
+                </p>
+              )}
+              <p className="mt-4 font-heading text-lead tabular-nums">{price(dish.price)}</p>
+            </article>
+          ),
+        )}
       </div>
     </section>
   );
