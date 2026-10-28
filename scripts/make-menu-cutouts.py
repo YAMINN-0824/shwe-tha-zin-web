@@ -40,6 +40,17 @@ SHADOW_NEUTRAL = 14
 # 影を消して、料理の部分がこれより多く減ったら、お皿まで消えている。影は消さない
 SHADOW_MAX_SHARE = 0.18
 
+# 写真ごとの直し（もとの写真の名前、拡張子なし）
+#   scale: 先に何倍にしてから切り抜くか（小さい JPEG のふちを、なめらかにする）
+#   erode: ふちをけずる大きさ（白いにじみを消す。ふつうは 3）
+#   base_fill: いちばん下のこの割合を、すけていない部分を囲む凸の形でうめる
+#              すけたグラスの底は、白い背景と見分けられず、ぎざぎざに消えるため
+#              グラスのとなりに果物などがある写真には使わない（すき間まで白でうまる）
+FIXES: dict[str, dict[str, float]] = {
+    # 626px の小さい JPEG。グラスの底がぎざぎざに消えて、ふちに白いにじみが出ていた
+    "Kiwi Soda": {"scale": 2, "erode": 7, "base_fill": 0.12},
+}
+
 
 def slug(name: str) -> str:
     # 「Burmese Pork Noodle Soup (Dry Style)」→「burmese-pork-noodle-soup-dry-style」
@@ -107,9 +118,52 @@ def with_shadow(image: Image.Image, background: Image.Image) -> Image.Image:
         region = grown
 
 
+def convex_hull(points: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    # 点をぜんぶ囲む、いちばん小さい凸の形（Andrew の方法）
+    points = sorted(set(points))
+    if len(points) < 3:
+        return points
+
+    def cross(o: tuple[int, int], a: tuple[int, int], b: tuple[int, int]) -> int:
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+
+    lower: list[tuple[int, int]] = []
+    upper: list[tuple[int, int]] = []
+    for point in points:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], point) <= 0:
+            lower.pop()
+        lower.append(point)
+    for point in reversed(points):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], point) <= 0:
+            upper.pop()
+        upper.append(point)
+    return lower[:-1] + upper[:-1]
+
+
+def fill_base(alpha: Image.Image, share: float) -> Image.Image:
+    # いちばん下の share だけ、すけていない部分を囲む凸の形でうめる（グラスの底）
+    bbox = alpha.getbbox()
+    if not bbox:
+        return alpha
+    top, bottom = bbox[1], bbox[3]
+    points: list[tuple[int, int]] = []
+    for y in range(int(bottom - (bottom - top) * share), bottom):
+        xs = [x for x in range(alpha.width) if alpha.getpixel((x, y)) > 128]
+        if xs:
+            points += [(xs[0], y), (xs[-1], y)]
+    filled = alpha.copy()
+    if len(points) >= 3:
+        ImageDraw.Draw(filled).polygon(convex_hull(points), fill=255)
+    return filled
+
+
 def cut_out(path: Path) -> tuple[Path, bool]:
     image = open_photo(path)
     image.thumbnail((MAX_SIDE, MAX_SIDE))
+    fix = FIXES.get(path.stem, {})
+    scale = int(fix.get("scale", 1))
+    if scale > 1:
+        image = image.resize((image.width * scale, image.height * scale), Image.LANCZOS)
     width, height = image.size
 
     background = white_background(image)
@@ -122,8 +176,10 @@ def cut_out(path: Path) -> tuple[Path, bool]:
 
     # 背景 = 0、料理 = 255
     alpha = ImageChops.invert(background)
+    if "base_fill" in fix:
+        alpha = fill_base(alpha, fix["base_fill"])
     # ふちの白いにじみを消すため、少しだけ内側にけずってから、やわらかくする
-    alpha = alpha.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(1))
+    alpha = alpha.filter(ImageFilter.MinFilter(int(fix.get("erode", 3)))).filter(ImageFilter.GaussianBlur(scale))
 
     result = image.convert("RGBA")
     result.putalpha(alpha)

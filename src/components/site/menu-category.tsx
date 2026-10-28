@@ -55,7 +55,7 @@ export function MenuCategorySection({
                 <Phrases>{dish.name}</Phrases>
               </h3>
               {dish.description && (
-                <p className="mt-4 text-body text-forest-soft">
+                <p className="mt-4 text-lead text-forest-soft">
                   <Phrases>{dish.description}</Phrases>
                 </p>
               )}

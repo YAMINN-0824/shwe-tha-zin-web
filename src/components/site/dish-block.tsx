@@ -135,7 +135,7 @@ export function DishBlock({
         <h3 id={headingId} className="text-h3 text-balance">
           {dish.title}
         </h3>
-        {dish.description && <p className="mt-4 max-w-[35em] text-body text-forest-soft">{dish.description}</p>}
+        {dish.description && <p className="mt-4 max-w-[35em] text-lead text-forest-soft">{dish.description}</p>}
         <p className="mt-4 font-heading text-lead tabular-nums">{dish.price}</p>
       </div>
 
